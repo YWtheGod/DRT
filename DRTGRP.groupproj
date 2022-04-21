@@ -1,0 +1,62 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{5B4CECB0-24A8-4D51-94AC-12EF0D5D12B4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="DRT.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DEMOS\TESTZSTD.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="DRT">
+        <MSBuild Projects="DRT.dproj"/>
+    </Target>
+    <Target Name="DRT:Clean">
+        <MSBuild Projects="DRT.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DRT:Make">
+        <MSBuild Projects="DRT.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TESTZSTD">
+        <MSBuild Projects="DEMOS\TESTZSTD.dproj"/>
+    </Target>
+    <Target Name="TESTZSTD:Clean">
+        <MSBuild Projects="DEMOS\TESTZSTD.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TESTZSTD:Make">
+        <MSBuild Projects="DEMOS\TESTZSTD.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="DRT;TESTZSTD"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="DRT:Clean;TESTZSTD:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="DRT:Make;TESTZSTD:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='DRT'">
+        <BuildGroupProject Include="DRT.dproj">
+            <ProjectGuid>{A0DA119A-61D9-460D-8A47-3AA296921B44}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win64;Win32;Linux64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
+            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win64</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+</Project>
