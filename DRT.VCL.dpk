@@ -25,11 +25,11 @@
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,
-  DRT,
+  DRT.WIN,
   vcl,
   vcledge;
 
