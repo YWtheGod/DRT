@@ -1,0 +1,397 @@
+object MainForm: TMainForm
+  Left = 0
+  Height = 701
+  Top = 0
+  Width = 995
+  Caption = 'VirtualHostBrowser - Initializing...'
+  ClientHeight = 701
+  ClientWidth = 995
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.2.0.4'
+  object WVWindowParent1: TWVWindowParent
+    Left = 0
+    Height = 678
+    Top = 23
+    Width = 995
+    Align = alClient
+    TabOrder = 0
+    Browser = WVBrowser1
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 23
+    Top = 0
+    Width = 995
+    Caption = 'ToolBar1'
+    Images = ImageList1
+    TabOrder = 1
+    object NewBtn: TToolButton
+      Left = 1
+      Hint = 'New document'
+      Top = 2
+      Caption = 'NewBtn'
+      ImageIndex = 8
+      OnClick = NewBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object OpenBtn: TToolButton
+      Left = 24
+      Hint = 'Open document'
+      Top = 2
+      Caption = 'OpenBtn'
+      ImageIndex = 9
+      OnClick = OpenBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object SaveBtn: TToolButton
+      Left = 47
+      Hint = 'Save document'
+      Top = 2
+      Caption = 'SaveBtn'
+      ImageIndex = 5
+      OnClick = SaveBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator1: TToolButton
+      Left = 70
+      Height = 22
+      Top = 2
+      Caption = 'Separator1'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
+    object BoldBtn: TToolButton
+      Left = 78
+      Hint = 'Bold'
+      Top = 2
+      Caption = 'BoldBtn'
+      ImageIndex = 3
+      OnClick = BoldBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object ItalicBtn: TToolButton
+      Left = 101
+      Hint = 'Italics'
+      Top = 2
+      Caption = 'ItalicBtn'
+      ImageIndex = 4
+      OnClick = ItalicBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object UnderlineBtn: TToolButton
+      Left = 124
+      Hint = 'Underline'
+      Top = 2
+      Caption = 'UnderlineBtn'
+      ImageIndex = 7
+      OnClick = UnderlineBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object StrikethroughBtn: TToolButton
+      Left = 147
+      Hint = 'Strikethrough'
+      Top = 2
+      Caption = 'StrikethroughBtn'
+      ImageIndex = 6
+      OnClick = StrikethroughBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator2: TToolButton
+      Left = 170
+      Height = 22
+      Top = 2
+      Caption = 'Separator2'
+      ImageIndex = 7
+      Style = tbsSeparator
+    end
+    object AlignLeftBtn: TToolButton
+      Left = 178
+      Hint = 'Align left'
+      Top = 2
+      Caption = 'AlignLeftBtn'
+      ImageIndex = 1
+      OnClick = AlignLeftBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object AlignCenterBtn: TToolButton
+      Left = 201
+      Hint = 'Align center'
+      Top = 2
+      Caption = 'AlignCenterBtn'
+      ImageIndex = 0
+      OnClick = AlignCenterBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object AlignRightBtn: TToolButton
+      Left = 224
+      Hint = 'Align right'
+      Top = 2
+      Caption = 'AlignRightBtn'
+      ImageIndex = 2
+      OnClick = AlignRightBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object AlignJustifyBtn: TToolButton
+      Left = 247
+      Hint = 'Justify'
+      Top = 2
+      Caption = 'AlignJustifyBtn'
+      ImageIndex = 12
+      OnClick = AlignJustifyBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator3: TToolButton
+      Left = 270
+      Height = 22
+      Top = 2
+      Caption = 'Separator3'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object LinkBtn: TToolButton
+      Left = 278
+      Hint = 'Create link'
+      Top = 2
+      Caption = 'LinkBtn'
+      ImageIndex = 10
+      OnClick = LinkBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator4: TToolButton
+      Left = 301
+      Height = 22
+      Top = 2
+      Caption = 'Separator4'
+      ImageIndex = 12
+      Style = tbsSeparator
+    end
+    object UnorderedListBtn: TToolButton
+      Left = 309
+      Hint = 'Create a bulleted unordered list'
+      Top = 2
+      Caption = 'UnorderedListBtn'
+      ImageIndex = 13
+      OnClick = UnorderedListBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object OrderedListBtn: TToolButton
+      Left = 332
+      Hint = 'Create a numbered ordered list'
+      Top = 2
+      Caption = 'OrderedListBtn'
+      ImageIndex = 14
+      OnClick = OrderedListBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator5: TToolButton
+      Left = 355
+      Height = 22
+      Top = 2
+      Caption = 'Separator5'
+      ImageIndex = 15
+      Style = tbsSeparator
+    end
+    object TextColorBtn: TToolButton
+      Left = 363
+      Hint = 'Text color'
+      Top = 2
+      Caption = 'TextColorBtn'
+      ImageIndex = 16
+      OnClick = TextColorBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object FillColorBtn: TToolButton
+      Left = 386
+      Hint = 'Background color'
+      Top = 2
+      Caption = 'FillColorBtn'
+      ImageIndex = 17
+      OnClick = FillColorBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator6: TToolButton
+      Left = 409
+      Height = 22
+      Top = 2
+      Caption = 'Separator6'
+      ImageIndex = 18
+      Style = tbsSeparator
+    end
+    object RemoveFormatBtn: TToolButton
+      Left = 417
+      Hint = 'Remove format'
+      Top = 2
+      Caption = 'RemoveFormatBtn'
+      ImageIndex = 18
+      OnClick = RemoveFormatBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Separator7: TToolButton
+      Left = 440
+      Height = 22
+      Top = 2
+      Caption = 'Separator7'
+      ImageIndex = 20
+      Style = tbsSeparator
+    end
+    object OutdentBtn: TToolButton
+      Left = 448
+      Hint = 'Outdent'
+      Top = 2
+      Caption = 'OutdentBtn'
+      ImageIndex = 19
+      OnClick = OutdentBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object IndentBtn: TToolButton
+      Left = 471
+      Hint = 'Indent'
+      Top = 2
+      Caption = 'IndentBtn'
+      ImageIndex = 15
+      OnClick = IndentBtnClick
+      ParentShowHint = False
+      ShowHint = True
+    end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 300
+    OnTimer = Timer1Timer
+    Left = 56
+    Top = 144
+  end
+  object WVBrowser1: TWVBrowser
+    DefaultURL = 'https://customhost.test/EditorBrowser.html'
+    TargetCompatibleBrowserVersion = '95.0.1020.44'
+    AllowSingleSignOnUsingOSPrimaryAccount = False
+    OnInitializationError = WVBrowser1InitializationError
+    OnAfterCreated = WVBrowser1AfterCreated
+    OnDocumentTitleChanged = WVBrowser1DocumentTitleChanged
+    OnRetrieveHTMLCompleted = WVBrowser1RetrieveHTMLCompleted
+    Left = 58
+    Top = 88
+  end
+  object ImageList1: TImageList
+    Left = 56
+    Top = 200
+    Bitmap = {
+      4C7A1400000010000000100000000D0700000000000078DAED5B5948564F14FF
+      DAB30523B3851E7A29285B14895CDAA4A282566D85501F7CD007AD48B4B0228A
+      324AA37D218A8282A80773439F2A22EAB5DC300349DB69A10DDBD4CE9FDF70E7
+      72FFF7BBCBCCBD9F7EDF67F7C041BF99F99D993967E6DCB9E79EF1F90242E490
+      03850F15723BEEBE3E6FCFFE9EFDFBA2FDFF55BB7BF6F7ECEFD9DF5B0F9EFD3D
+      7FD0237AEBD7AF1F4D9D3A956EDCB8416EF52E2083B5DBB76F9FDAEEFBF7EFB4
+      7EFD7A561E1313238D07D5D6D6B2F241830649E3BF7DFB46696969AC7CD1A245
+      E474FEE3C68DA3B6B63672A3BFFCFC7C47F3BF7FFF3E0D193284D53D7CF89064
+      F1A084840456575C5C2C8DBF7BF72E0D1E3C98D55DBA74C9F1BE9B3871227DFD
+      FA551A8FBE972D5B46CF9E3DEB8B7B36583EB4A7F18C366FDECCDAC307FDFDFB
+      57CA7ECF9F3FA701030688AC3B43CACBCB63D8091326D0AF5FBFA4F09F3E7DA2
+      E1C38733FCE1C387A5FB3E70E000C38E1C39923E7FFE2C85FFF9F3278D1D3B96
+      E177ECD821DDF7F9F3E7557FF9E2C50B297C7777374D9E3C99E1D3D3D329DCD6
+      5B38525D5D1DAD5CB992162E5C68C9F081D8137A3CB09191919658D4438F9326
+      4DF293C1DB588D51A93794218B07632EDABAD8D858BA77EF9E29A35E8BD7F6A7
+      972DC2BD819F397326CD9831C311FEDAB56B6AFD952B57A4F0E857AF7FE5EC25
+      8457C6EC180F56C6CC48F1DDA678AC5F231DA14F7DBF9C57AF5EADE2EBEBEB69
+      D5AA55B6FB8733B04D4D4D7DD6A77CFCF8910E1D3A441B376E647E05CF90E6E6
+      66A1F9A2DDE8D1A3FDF48DE7F0AD5BB76C65F0B3FE82050BE8E9D3A7F4FAF56B
+      CACECE6665A3468DA2CECE4E4B19B367CF666D8F1C39A2B6C3F373CB962D8CDF
+      BD7B67892F292961365EBE7C39F31B2273C65AC5995786B5EBDBADFFE084330A
+      F40FE667259C97F93906E760BC4F41875D5D5D7E78E89ACB7FF2E4895AFFE6CD
+      1BB5BCA5A5C55227F3E6CD537DC0D5AB57A9BCBC9C52535359199E2176F6435F
+      4949497EF305B6AAAA4A78CF3D7AF4884E9E3C49478F1EA59B376FD2972F5FC2
+      61BF9ABE7F296542710B0F1F1CFCD0A14359FDD6AD5BC9EC5D62D8B061A6F8F9
+      F3E7B33663C68CA1972F5FAAEDDADBDB292A2ACA74DF732A2B2B53C70819E813
+      CCB1E0CACA4ACB7D50505060EA7376EDDA25B487B0E7E1BF315730C66CD76F18
+      C650038A9F33678E695BA3F528D33F7FE6B8C5DBC810C25BC810C69BC808AAFD
+      3CFCBF8DE7F151114E4E4E0E295F68E67B04FD8EEDDEED01DF4B8ABE1DE37D06
+      DFBF44CFEE1EBE67F04EED27B3F742750FFEEB84773BC4FA535252D438CBE3C7
+      8F19F3DFA8DBB06183DF7BE09E3D7B984D67CD9A45EBD6AD53B9B1B191B1B68C
+      C701158CAFA1A1817DE3DCBB77AFF07A282A2A6218608F1D3BC6BEADFDFEFDDB
+      2F9EA9676D7C1EB1F5D2D25242BC01EF0D32F81F3F7E303CFA46EC0A63D9BD7B
+      B7F0F80B0B0BA97FFFFE4C37F8AD6059AC6CCD9A352A637E606DD9B469D30CFD
+      7A7575356DDAB4C9D67EB0714D4D8DB7F75C3EFF34FE8F3C0E6DC6BBB0591C5A
+      CFD8D7898989EA6F7C7B7CFBF62D8B372BB1034B3E71E204216761FAF4E93470
+      E0407AF0E081E577002D63FFF2B6ADADAD74F1E245BF7D9A99996988855F406C
+      D16EA177747408EB224C3810E7CF60FA8F5018BF377F6FFEDEFC434387323A09
+      24DED39FA73F4F7F81D19D53193E97FA0F24BED7F587F768A702323232F4B9B1
+      C2F3DFBF7F3F656565B9D15FB0D7B4EBFE35714147EBC7253EDC7D42589F7F8C
+      721265C8282751705E6A3B131952FAB3188790FDDCE0DD8CDFADFEDCDACF3BFF
+      079E1077F519E47289D2B66DDB54FCF6EDDBA5F07FFEFCA1E8E86816CB02E37F
+      9489E26FDFBECDFA5DBB762D8B39E3FF8A8A0A613CC7200F85E7C4283968B6F4
+      FEFD7B3666E4CF23570D7179E4CFA0ECC3870FB6328E1F3FEEA7B3DCDC5C5676
+      EAD4295BBC3E4F59CBF1F1F1246A7333C6F7023B9B9F3E7DDAAF0DBE53F82CEE
+      20719B23C710F9A3FA7AC430118F1C3F7EBC610EA0D6E666E35BB162056B2393
+      07D81B74FDFA7572C27A39C8D9CCC9C9A173E7CE399A1FF48A758E73ECD9B367
+      1DC9801DE3E2E21CCB40CE256CC4EF9FC8C840EC9AEF55C48995B5202483EF3B
+      60B9AFC15FEE0BCE9C394322FDEAFD147E2BB9E2A63278DE9F1DE32E8F111EF7
+      6D94770F5346FD850B1788DB592F036BC64C06CAF99A7AF5EA158BBFE3AF880C
+      2D16C4EF422A79DA3E2B197A2C88DF438C888830B507F4015DF1F96A69E7CE9D
+      3462C408C237D8BEB6FF8345584F070F1E647B0EFFF31C7CD1F30FB03EE57EAC
+      A40C46F89EADDCAD5565F03AE59B14FBBE6475FFCF4C06BF3F78F9F2655B7D43
+      C6E2C58BFDE682E7A2F6FBBC9D8C254B9618CE4594204379D63B92013C9EC55C
+      CFB232B4F7FFE6CE9D2B2503F7FFA64C99C23088890063665B23D2E630F3B38A
+      8C0C7E7760E9D2A5FF6BA395A1DC179226C800F6CE9D3BA176F6EF33EF3F6EDE
+      250D7283A5E3474EF0DA9C36899C495FA0F06EC71F08FD05391610B6EBFF3FB6
+      A59E50
+    }
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 137
+    Top = 88
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 137
+    Top = 144
+  end
+  object ColorDialog1: TColorDialog
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    Left = 137
+    Top = 200
+  end
+end
