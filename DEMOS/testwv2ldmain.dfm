@@ -27,6 +27,15 @@ object Main: TMain
       TabOrder = 0
       OnClick = Button1Click
     end
+    object Button2: TButton
+      Left = 432
+      Top = 13
+      Width = 75
+      Height = 25
+      Caption = 'Button2'
+      TabOrder = 1
+      OnClick = Button2Click
+    end
   end
   object W: TEdgeBrowser
     Left = 0
@@ -35,9 +44,5 @@ object Main: TMain
     Height = 433
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 360
-    ExplicitTop = 24
-    ExplicitWidth = 100
-    ExplicitHeight = 40
   end
 end

@@ -1,4 +1,4 @@
-﻿package DRT.WIN;
+﻿package DRT.VCL;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,12 +25,15 @@
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$IMPLICITBUILD OFF}
+{$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  DRT.WIN,
+  vcl,
+  vcledge;
 
 contains
-  DRT.WIN.WebView2Loader in 'WIN\DRT.WIN.WebView2Loader.pas';
+  DRT.VCL.WV2Loader in 'VCL\DRT.VCL.WV2Loader.pas';
 
 end.

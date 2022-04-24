@@ -9,6 +9,9 @@
         <Projects Include="DRT.WIN.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="DRT.VCL.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="DEMOS\TESTZSTD.dproj">
             <Dependencies/>
         </Projects>
@@ -41,6 +44,15 @@
     <Target Name="DRT_WIN:Make">
         <MSBuild Projects="DRT.WIN.dproj" Targets="Make"/>
     </Target>
+    <Target Name="DRT_VCL">
+        <MSBuild Projects="DRT.VCL.dproj"/>
+    </Target>
+    <Target Name="DRT_VCL:Clean">
+        <MSBuild Projects="DRT.VCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DRT_VCL:Make">
+        <MSBuild Projects="DRT.VCL.dproj" Targets="Make"/>
+    </Target>
     <Target Name="TESTZSTD">
         <MSBuild Projects="DEMOS\TESTZSTD.dproj"/>
     </Target>
@@ -60,16 +72,22 @@
         <MSBuild Projects="DEMOS\TESTWV2LD.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="DRT;DRT_WIN;TESTZSTD;TESTWV2LD"/>
+        <CallTarget Targets="DRT;DRT_WIN;DRT_VCL;TESTZSTD;TESTWV2LD"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;TESTZSTD:Clean;TESTWV2LD:Clean"/>
+        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;DRT_VCL:Clean;TESTZSTD:Clean;TESTWV2LD:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="DRT:Make;DRT_WIN:Make;TESTZSTD:Make;TESTWV2LD:Make"/>
+        <CallTarget Targets="DRT:Make;DRT_WIN:Make;DRT_VCL:Make;TESTZSTD:Make;TESTWV2LD:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='DRT'">
+        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
+            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win64</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
         <BuildGroupProject Include="DRT.WIN.dproj">
             <ProjectGuid>{F3C6F04F-5F49-4EE7-BC04-648F126E1E23}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
@@ -82,16 +100,16 @@
             <Platforms>Win64;Win32;Linux64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
+        <BuildGroupProject Include="DRT.VCL.dproj">
+            <ProjectGuid>{972CA42A-313B-46E7-AA65-B16D6506681A}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
         <BuildGroupProject Include="DEMOS\TESTWV2LD.dproj">
             <ProjectGuid>{53ECE6FA-8592-4AC6-B887-53B355935019}</ProjectGuid>
             <Configurations>Debug</Configurations>
             <Platforms>Win32</Platforms>
-            <Enabled>False</Enabled>
-        </BuildGroupProject>
-        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
-            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
-            <Configurations>Release</Configurations>
-            <Platforms>Win64</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
     </ItemGroup>
