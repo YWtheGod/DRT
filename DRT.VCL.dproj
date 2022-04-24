@@ -3,7 +3,7 @@
         <ProjectGuid>{972CA42A-313B-46E7-AA65-B16D6506681A}</ProjectGuid>
         <MainSource>DRT.VCL.dpk</MainSource>
         <ProjectVersion>19.4</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -59,7 +59,7 @@
         <DCC_K>false</DCC_K>
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
         <SanitizedProjectName>DRT_VCL</SanitizedProjectName>
         <VerInfo_Locale>2052</VerInfo_Locale>
@@ -109,7 +109,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
-        <DCCReference Include="DRT.WIN.dcp"/>
+        <DCCReference Include="DRT.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vcledge.dcp"/>
         <DCCReference Include="VCL\DRT.VCL.WV2Loader.pas"/>

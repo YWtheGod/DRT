@@ -26,7 +26,7 @@ package DRT;
 {$DEFINE DEBUG}
 {$DEFINE AVX2}
 {$ENDIF IMPLICITBUILDING}
-{$IMPLICITBUILD OFF}
+{$IMPLICITBUILD ON}
 
 requires
   rtl;
@@ -42,7 +42,53 @@ contains
   DRT.ZSTDLib in 'ZSTD\DRT.ZSTDLib.pas',
   DRT.LIBNAME in 'DRT.LIBNAME.pas',
   DRT.LZ4 in 'LZ4\DRT.LZ4.pas',
-  DRT.lz4lib in 'LZ4\DRT.lz4lib.pas';
+  DRT.lz4lib in 'LZ4\DRT.lz4lib.pas' {$IFDEF MSWINDOWS},
+  DRT.WIN.WebView2Loader in 'WIN\DRT.WIN.WebView2Loader.pas',
+  uWVConstants in 'WebView4Delphi\source\uWVConstants.pas',
+  uWVCoreWebView2 in 'WebView4Delphi\source\uWVCoreWebView2.pas',
+  uWVCoreWebView2Args in 'WebView4Delphi\source\uWVCoreWebView2Args.pas',
+  uWVCoreWebView2BasicAuthenticationResponse in 'WebView4Delphi\source\uWVCoreWebView2BasicAuthenticationResponse.pas',
+  uWVCoreWebView2ClientCertificate in 'WebView4Delphi\source\uWVCoreWebView2ClientCertificate.pas',
+  uWVCoreWebView2ClientCertificateCollection in 'WebView4Delphi\source\uWVCoreWebView2ClientCertificateCollection.pas',
+  uWVCoreWebView2CompositionController in 'WebView4Delphi\source\uWVCoreWebView2CompositionController.pas',
+  uWVCoreWebView2ContextMenuItem in 'WebView4Delphi\source\uWVCoreWebView2ContextMenuItem.pas',
+  uWVCoreWebView2ContextMenuItemCollection in 'WebView4Delphi\source\uWVCoreWebView2ContextMenuItemCollection.pas',
+  uWVCoreWebView2ContextMenuTarget in 'WebView4Delphi\source\uWVCoreWebView2ContextMenuTarget.pas',
+  uWVCoreWebView2Controller in 'WebView4Delphi\source\uWVCoreWebView2Controller.pas',
+  uWVCoreWebView2Cookie in 'WebView4Delphi\source\uWVCoreWebView2Cookie.pas',
+  uWVCoreWebView2CookieList in 'WebView4Delphi\source\uWVCoreWebView2CookieList.pas',
+  uWVCoreWebView2CookieManager in 'WebView4Delphi\source\uWVCoreWebView2CookieManager.pas',
+  uWVCoreWebView2Deferral in 'WebView4Delphi\source\uWVCoreWebView2Deferral.pas',
+  uWVCoreWebView2Delegates in 'WebView4Delphi\source\uWVCoreWebView2Delegates.pas',
+  uWVCoreWebView2DownloadOperation in 'WebView4Delphi\source\uWVCoreWebView2DownloadOperation.pas',
+  uWVCoreWebView2Environment in 'WebView4Delphi\source\uWVCoreWebView2Environment.pas',
+  uWVCoreWebView2EnvironmentOptions in 'WebView4Delphi\source\uWVCoreWebView2EnvironmentOptions.pas',
+  uWVCoreWebView2Frame in 'WebView4Delphi\source\uWVCoreWebView2Frame.pas',
+  uWVCoreWebView2FrameInfo in 'WebView4Delphi\source\uWVCoreWebView2FrameInfo.pas',
+  uWVCoreWebView2FrameInfoCollection in 'WebView4Delphi\source\uWVCoreWebView2FrameInfoCollection.pas',
+  uWVCoreWebView2FrameInfoCollectionIterator in 'WebView4Delphi\source\uWVCoreWebView2FrameInfoCollectionIterator.pas',
+  uWVCoreWebView2HttpHeadersCollectionIterator in 'WebView4Delphi\source\uWVCoreWebView2HttpHeadersCollectionIterator.pas',
+  uWVCoreWebView2HttpRequestHeaders in 'WebView4Delphi\source\uWVCoreWebView2HttpRequestHeaders.pas',
+  uWVCoreWebView2HttpResponseHeaders in 'WebView4Delphi\source\uWVCoreWebView2HttpResponseHeaders.pas',
+  uWVCoreWebView2PointerInfo in 'WebView4Delphi\source\uWVCoreWebView2PointerInfo.pas',
+  uWVCoreWebView2PrintSettings in 'WebView4Delphi\source\uWVCoreWebView2PrintSettings.pas',
+  uWVCoreWebView2ProcessInfo in 'WebView4Delphi\source\uWVCoreWebView2ProcessInfo.pas',
+  uWVCoreWebView2ProcessInfoCollection in 'WebView4Delphi\source\uWVCoreWebView2ProcessInfoCollection.pas',
+  uWVCoreWebView2Settings in 'WebView4Delphi\source\uWVCoreWebView2Settings.pas',
+  uWVCoreWebView2StringCollection in 'WebView4Delphi\source\uWVCoreWebView2StringCollection.pas',
+  uWVCoreWebView2WebResourceRequest in 'WebView4Delphi\source\uWVCoreWebView2WebResourceRequest.pas',
+  uWVCoreWebView2WebResourceResponse in 'WebView4Delphi\source\uWVCoreWebView2WebResourceResponse.pas',
+  uWVCoreWebView2WebResourceResponseView in 'WebView4Delphi\source\uWVCoreWebView2WebResourceResponseView.pas',
+  uWVCoreWebView2WindowFeatures in 'WebView4Delphi\source\uWVCoreWebView2WindowFeatures.pas',
+  uWVEvents in 'WebView4Delphi\source\uWVEvents.pas',
+  uWVInterfaces in 'WebView4Delphi\source\uWVInterfaces.pas',
+  uWVLibFunctions in 'WebView4Delphi\source\uWVLibFunctions.pas',
+  uWVLoader in 'WebView4Delphi\source\uWVLoader.pas',
+  uWVMiscFunctions in 'WebView4Delphi\source\uWVMiscFunctions.pas',
+  uWVTypes in 'WebView4Delphi\source\uWVTypes.pas',
+  uWVTypeLibrary in 'WebView4Delphi\source\uWVTypeLibrary.pas',
+  DRT.WIN.WV2Loader in 'WIN\DRT.WIN.WV2Loader.pas'
+  {$ENDIF};
 
 end.
 

@@ -140,7 +140,56 @@
         <DCCReference Include="ZSTD\DRT.ZSTDLib.pas"/>
         <DCCReference Include="DRT.LIBNAME.pas"/>
         <DCCReference Include="LZ4\DRT.LZ4.pas"/>
-        <DCCReference Include="LZ4\DRT.lz4lib.pas"/>
+        <DCCReference Include="LZ4\DRT.lz4lib.pas">
+            <Form>$IFDEF MSWINDOWS</Form>
+        </DCCReference>
+        <DCCReference Include="WIN\DRT.WIN.WebView2Loader.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVConstants.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Args.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2BasicAuthenticationResponse.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ClientCertificate.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ClientCertificateCollection.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2CompositionController.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ContextMenuItem.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ContextMenuItemCollection.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ContextMenuTarget.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Controller.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Cookie.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2CookieList.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2CookieManager.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Deferral.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Delegates.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2DownloadOperation.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Environment.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2EnvironmentOptions.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Frame.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2FrameInfo.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2FrameInfoCollection.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2FrameInfoCollectionIterator.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2HttpHeadersCollectionIterator.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2HttpRequestHeaders.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2HttpResponseHeaders.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2PointerInfo.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2PrintSettings.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ProcessInfo.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2ProcessInfoCollection.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2Settings.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2StringCollection.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2WebResourceRequest.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2WebResourceResponse.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2WebResourceResponseView.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVCoreWebView2WindowFeatures.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVEvents.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVInterfaces.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVLibFunctions.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVLoader.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVMiscFunctions.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVTypes.pas"/>
+        <DCCReference Include="WebView4Delphi\source\uWVTypeLibrary.pas"/>
+        <DCCReference Include="WIN\DRT.WIN.WV2Loader.pas">
+            <Form>$ENDIF</Form>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

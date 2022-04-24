@@ -1,4 +1,4 @@
-﻿program TESTWV2LD;
+﻿program TESTVCLEDGE;
 
 uses
   Vcl.Forms,

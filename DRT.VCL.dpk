@@ -29,7 +29,7 @@
 
 requires
   rtl,
-  DRT.WIN,
+  DRT,
   vcl,
   vcledge;
 
