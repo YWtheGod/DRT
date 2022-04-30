@@ -4,7 +4,7 @@
         <ProjectVersion>19.4</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -149,6 +149,10 @@ $(PreBuildEvent)]]></PreBuildEvent>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Linux64)'!=''">
         <DCC_UsePackage>RESTComponents;emsclientfiredac;DataSnapFireDAC;FireDACADSDriver;FDSQLITEDRV;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;inetdb;emsedge;fmx;FireDACIBDriver;dbexpress;IndyCore;dsnap;emsclient;DataSnapCommon;FireDACCommon;RESTBackendComponents;DataSnapConnectors;soapserver;bindengine;CloudService;FireDACOracleDriver;FireDACMySQLDriver;FireDACCommonODBC;FireDACCommonDriver;DataSnapClient;inet;YWRTL;IndySystem;FireDACDb2Driver;FireDACInfxDriver;FireDAC;emshosting;FireDACSqliteDriver;FireDACPgDriver;FireDACASADriver;FireDACTDataDriver;soaprtl;DbxCommonDriver;DataSnapServer;xmlrtl;soapmidas;DataSnapNativeClient;rtl;emsserverresource;DbxClientDriver;CustomIPTransport;bindcomp;dbxcds;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;dbrtl;IndyProtocols;FireDACMongoDBDriver;DataSnapServerMidas;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_LinkerOptions>D:\Users\YW\Documents\Embarcadero\Studio\Projects\YWLIB\DRT\BIN\mimalloc.o</DCC_LinkerOptions>
+        <Debugger_Launcher>/usr/bin/xterm -e &quot;%debuggee%&quot;</Debugger_Launcher>
+        <Manifest_File>(None)</Manifest_File>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_OSX64)'!=''">
         <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=$(MSBuildProjectName);CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;NSLocationUsageDescription=The reason for accessing the location information of the user;NSContactsUsageDescription=The reason for accessing the contacts;NSCalendarsUsageDescription=The reason for accessing the calendar data;NSRemindersUsageDescription=The reason for accessing the reminders;NSCameraUsageDescription=The reason for accessing the camera;NSMicrophoneUsageDescription=The reason for accessing the microphone;NSMotionUsageDescription=The reason for accessing the accelerometer;NSDesktopFolderUsageDescription=The reason for accessing the Desktop folder;NSDocumentsFolderUsageDescription=The reason for accessing the Documents folder;NSDownloadsFolderUsageDescription=The reason for accessing the Downloads folder;NSNetworkVolumesUsageDescription=The reason for accessing files on a network volume;NSRemovableVolumesUsageDescription=The reason for accessing files on a removable volume;NSSpeechRecognitionUsageDescription=The reason for requesting to send user data to Apple&apos;s speech recognition servers</VerInfo_Keys>
@@ -273,6 +277,30 @@ $(PreBuildEvent)]]></PreBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="..\..\..\YW_DEMOS\DATA.PART.1" Configuration="Debug" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteName>DATA.PART.1</RemoteName>
+                        <Overwrite>false</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\YW_DEMOS\DATA.PART.2" Configuration="Debug" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteName>DATA.PART.2</RemoteName>
+                        <Overwrite>false</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\YW_DEMOS\DATA.PART.3" Configuration="Debug" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteName>DATA.PART.3</RemoteName>
+                        <Overwrite>false</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\YW_DEMOS\DATA.PART.4" Configuration="Debug" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteName>DATA.PART.4</RemoteName>
+                        <Overwrite>false</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="DATA.PART.1" Configuration="Release" Class="File">
                     <Platform Name="Linux64">
                         <RemoteName>DATA.PART.1</RemoteName>
@@ -297,10 +325,10 @@ $(PreBuildEvent)]]></PreBuildEvent>
                         <Overwrite>false</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Linux64\Release\glibc-2.31.tar" Configuration="Debug" Class="File">
+                <DeployFile LocalName="Linux64\Debug\TESTZSTD" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Linux64">
-                        <RemoteName>glibc-2.31.tar</RemoteName>
-                        <Overwrite>false</Overwrite>
+                        <RemoteName>TESTZSTD</RemoteName>
+                        <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Linux64\Release\TESTZSTD" Configuration="Release" Class="ProjectOutput">
@@ -1169,7 +1197,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Android'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1177,7 +1205,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Android64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1185,7 +1213,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='iOSDevice64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1193,7 +1221,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Linux64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1201,7 +1229,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSX64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1209,7 +1237,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSXARM64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1217,7 +1245,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1225,7 +1253,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1233,7 +1261,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Android'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1241,7 +1269,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Android64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1249,7 +1277,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='iOSDevice64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1257,7 +1285,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Linux64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1265,7 +1293,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSX64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1273,7 +1301,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSXARM64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1281,7 +1309,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
@@ -1289,7 +1317,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
-        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
+        <PreBuildEvent>copy $(PROJECTDIR)\DATA.PART.1 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.2 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.3 $(OUTPUTDIR)&amp;&amp;copy $(PROJECTDIR)\DATA.PART.4 $(OUTPUTDIR)</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>

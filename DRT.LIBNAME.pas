@@ -21,9 +21,9 @@ const
 {$IFDEF WIN64}
 const
 {$IFDEF AVX2}
-  libdrt = 'drt.win64.avx2.dll';
+  libdrt = 'drt.x64.avx2.dll';
 {$ELSE}
-  libdrt = 'drt.win64.sse2.dll';
+  libdrt = 'drt.x64.sse2.dll';
 {$ENDIF}
   _PU = '';
 {$ENDIF WIN64}

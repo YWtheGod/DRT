@@ -94,28 +94,10 @@
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='DRT'">
-        <BuildGroupProject Include="DEMOS\TESTVCLEDGE.dproj">
-            <ProjectGuid>{53ECE6FA-8592-4AC6-B887-53B355935019}</ProjectGuid>
-            <Configurations>Debug</Configurations>
-            <Platforms>Win32</Platforms>
-            <Enabled>False</Enabled>
-        </BuildGroupProject>
-        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
-            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
-            <Configurations>Release</Configurations>
-            <Platforms>Win64</Platforms>
-            <Enabled>False</Enabled>
-        </BuildGroupProject>
         <BuildGroupProject Include="DRT.WIN.dproj">
             <ProjectGuid>{E3A390E0-66B0-427B-B57A-C5E07798D674}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
             <Platforms>Win32;Win64</Platforms>
-            <Enabled>True</Enabled>
-        </BuildGroupProject>
-        <BuildGroupProject Include="DRT.dproj">
-            <ProjectGuid>{A0DA119A-61D9-460D-8A47-3AA296921B44}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
-            <Platforms>Win64;Win32;Linux64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
         <BuildGroupProject Include="DRT.VCL.dproj">
@@ -128,6 +110,24 @@
             <ProjectGuid>{2F973D83-6A89-43FA-98ED-2E0D89FBA795}</ProjectGuid>
             <Configurations>Debug</Configurations>
             <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DRT.dproj">
+            <ProjectGuid>{A0DA119A-61D9-460D-8A47-3AA296921B44}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win64;Win32;Linux64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DEMOS\TESTVCLEDGE.dproj">
+            <ProjectGuid>{53ECE6FA-8592-4AC6-B887-53B355935019}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
+            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win64</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
     </ItemGroup>

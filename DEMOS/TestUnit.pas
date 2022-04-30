@@ -31,6 +31,7 @@ end;
 procedure DoTest; cdecl;
 begin
   writeln('zstd version: ',ZSTD_VERSION_STRING);
+//  readln;
   writeln;
   try
     { TODO -oUser -cConsole Main : Insert code here }

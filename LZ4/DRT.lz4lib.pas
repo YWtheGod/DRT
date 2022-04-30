@@ -258,10 +258,10 @@ const
   );
 
 //  function LZ4_versionNumber(): Integer;
-//  external libdrt name _PU+'LZ4_versionNumber';
+//  cdecl; external libdrt name _PU+'LZ4_versionNumber';
 //
 //  function LZ4_versionString(): PUTF8Char;
-//  external libdrt name _PU+'LZ4_versionString';
+//  cdecl; external libdrt name _PU+'LZ4_versionString';
 //
 //  (*! LZ4_compress_default() :
 //   *  Compresses 'srcSize' bytes from buffer 'src'
@@ -278,7 +278,7 @@ const
 //   * Note : This function is protected against buffer overflow scenarios (never writes outside 'dst' buffer, nor read outside 'source' buffer).
 //   *)
 //  function LZ4_compress_default(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;
-//  external libdrt name _PU+'LZ4_compress_default';
+//  cdecl; external libdrt name _PU+'LZ4_compress_default';
 
   (*! LZ4_decompress_safe() :
    *  compressedSize : is the exact complete size of the compressed block.
@@ -295,7 +295,7 @@ const
    *          If there is a need for a different format which bundles together both compressed data and its metadata, consider looking at lz4frame.h instead.
    *)
   function LZ4_decompress_safe(const src: PUTF8Char; dst: PUTF8Char; compressedSize: Integer; dstCapacity: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_safe';
+  cdecl; external libdrt name _PU+'LZ4_decompress_safe';
 
   (*! LZ4_compressBound() :
       Provides the maximum size that LZ4 compression may output in a "worst case" scenario (input data not compressible)
@@ -307,7 +307,7 @@ const
                 or 0, if input size is incorrect (too large or negative)
    *)
   function LZ4_compressBound(inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressBound';
+  cdecl; external libdrt name _PU+'LZ4_compressBound';
 
   (*! LZ4_compress_fast() :
       Same as LZ4_compress_default(), but allows selection of "acceleration" factor.
@@ -318,7 +318,7 @@ const
       Values > LZ4_ACCELERATION_MAX will be replaced by LZ4_ACCELERATION_MAX (currently == 65537, see lz4.c).
    *)
   function LZ4_compress_fast(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer; acceleration: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_fast';
+  cdecl; external libdrt name _PU+'LZ4_compress_fast';
 
   (*! LZ4_compress_fast_extState() :
    *  Same as LZ4_compress_fast(), using an externally allocated memory space for its state.
@@ -327,10 +327,10 @@ const
    *  Then, provide this buffer as `void* state` to compression function.
    *)
   function LZ4_sizeofState(): Integer;
-  external libdrt name _PU+'LZ4_sizeofState';
+  cdecl; external libdrt name _PU+'LZ4_sizeofState';
 
   function LZ4_compress_fast_extState(state: Pointer; const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer; acceleration: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_fast_extState';
+  cdecl; external libdrt name _PU+'LZ4_compress_fast_extState';
 
   (*! LZ4_compress_destSize() :
    *  Reverse the logic : compresses as much data as possible from 'src' buffer
@@ -349,13 +349,13 @@ const
    *        require to be decompressed into a destination buffer larger
    *        by at least 1 byte than the content to decompress.
    *        If an application uses `LZ4_compress_destSize()`,
-   *        it's highly recommended to update external libdrt name _PU+'t be done or ensured,
+   *        it's highly recommended to update cdecl; external libdrt name _PU+'t be done or ensured,
    *        the receiving decompression function should provide
    *        a dstCapacity which is > decompressedSize, by at least 1 byte.
    *        See https://github.com/lz4/lz4/issues/859 for details
    *)
   function LZ4_compress_destSize(const src: PUTF8Char; dst: PUTF8Char; srcSizePtr: PInteger; targetDstSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_destSize';
+  cdecl; external libdrt name _PU+'LZ4_compress_destSize';
 
   (*! LZ4_decompress_safe_partial() :
    *  Decompress an LZ4 compressed block, of size 'srcSize' at position 'src',
@@ -392,13 +392,13 @@ const
    *           Otherwise, *silent corruption will occur*.
    *)
   function LZ4_decompress_safe_partial(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; targetOutputSize: Integer; dstCapacity: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_safe_partial';
+  cdecl; external libdrt name _PU+'LZ4_decompress_safe_partial';
 
   function LZ4_createStream(): PLZ4_stream_t;
-  external libdrt name _PU+'LZ4_createStream';
+  cdecl; external libdrt name _PU+'LZ4_createStream';
 
   function LZ4_freeStream(streamPtr: PLZ4_stream_t): Integer;
-  external libdrt name _PU+'LZ4_freeStream';
+  cdecl; external libdrt name _PU+'LZ4_freeStream';
 
   (*! LZ4_resetStream_fast() : v1.9.0+
    *  Use this to prepare an LZ4_stream_t for a new chain of dependent blocks
@@ -423,7 +423,7 @@ const
    *        Invoking LZ4_resetStream_fast() before is redundant, and even counterproductive.
    *)
   procedure LZ4_resetStream_fast(streamPtr: PLZ4_stream_t);
-  external libdrt name _PU+'LZ4_resetStream_fast';
+  cdecl; external libdrt name _PU+'LZ4_resetStream_fast';
 
   (*! LZ4_loadDict() :
    *  Use this function to reference a static dictionary into LZ4_stream_t.
@@ -437,7 +437,7 @@ const
    * @return : loaded dictionary size, in bytes (necessarily <= 64 KB)
    *)
   function LZ4_loadDict(streamPtr: PLZ4_stream_t; const dictionary: PUTF8Char; dictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_loadDict';
+  cdecl; external libdrt name _PU+'LZ4_loadDict';
 
   (*! LZ4_compress_fast_continue() :
    *  Compress 'src' content using data from previously compressed blocks, for better compression ratio.
@@ -463,7 +463,7 @@ const
    *  Note 5 : After an error, the stream status is undefined (invalid), it can only be reset or freed.
    *)
   function LZ4_compress_fast_continue(streamPtr: PLZ4_stream_t; const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer; acceleration: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_fast_continue';
+  cdecl; external libdrt name _PU+'LZ4_compress_fast_continue';
 
   (*! LZ4_saveDict() :
    *  If last 64KB data cannot be guaranteed to remain available at its current memory location,
@@ -473,17 +473,17 @@ const
    * @return : saved dictionary size in bytes (necessarily <= maxDictSize), or 0 if error.
    *)
   function LZ4_saveDict(streamPtr: PLZ4_stream_t; safeBuffer: PUTF8Char; maxDictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_saveDict';
+  cdecl; external libdrt name _PU+'LZ4_saveDict';
 
   (*! LZ4_createStreamDecode() and LZ4_freeStreamDecode() :
    *  creation / destruction of streaming decompression tracking context.
    *  A tracking context can be re-used multiple times.
    *)
   function LZ4_createStreamDecode(): PLZ4_streamDecode_t;
-  external libdrt name _PU+'LZ4_createStreamDecode';
+  cdecl; external libdrt name _PU+'LZ4_createStreamDecode';
 
   function LZ4_freeStreamDecode(LZ4_stream: PLZ4_streamDecode_t): Integer;
-  external libdrt name _PU+'LZ4_freeStreamDecode';
+  cdecl; external libdrt name _PU+'LZ4_freeStreamDecode';
 
   (*! LZ4_setStreamDecode() :
    *  An LZ4_streamDecode_t context can be allocated once and re-used multiple times.
@@ -493,7 +493,7 @@ const
    * @return : 1 if OK, 0 if error
    *)
   function LZ4_setStreamDecode(LZ4_streamDecode: PLZ4_streamDecode_t; const dictionary: PUTF8Char; dictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_setStreamDecode';
+  cdecl; external libdrt name _PU+'LZ4_setStreamDecode';
 
   (*! LZ4_decoderRingBufferSize() : v1.8.2+
    *  Note : in a ring buffer scenario (optional),
@@ -507,7 +507,7 @@ const
    *           or 0 if there is an error (invalid maxBlockSize).
    *)
   function LZ4_decoderRingBufferSize(maxBlockSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decoderRingBufferSize';
+  cdecl; external libdrt name _PU+'LZ4_decoderRingBufferSize';
 
   (*! LZ4_decompress_*_continue() :
    *  These decoding functions allow decompression of consecutive blocks in "streaming" mode.
@@ -535,7 +535,7 @@ const
    *  then indicate where this data is saved using LZ4_setStreamDecode(), before decompressing next block.
    *)
   function LZ4_decompress_safe_continue(LZ4_streamDecode: PLZ4_streamDecode_t; const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_safe_continue';
+  cdecl; external libdrt name _PU+'LZ4_decompress_safe_continue';
 
   (*! LZ4_decompress_*_usingDict() :
    *  These decoding functions work the same as
@@ -546,7 +546,7 @@ const
    *                    when dst == dictStart + dictSize.
    *)
   function LZ4_decompress_safe_usingDict(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapcity: Integer; const dictStart: PUTF8Char; dictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_safe_usingDict';
+  cdecl; external libdrt name _PU+'LZ4_decompress_safe_usingDict';
 
   (*! LZ4_initStream() : v1.9.0+
    *  An LZ4_stream_t structure must be initialized at least once.
@@ -563,52 +563,52 @@ const
    *  Note3: Before v1.9.0, use LZ4_resetStream() instead
    *)
   function LZ4_initStream(buffer: Pointer; size: NativeUInt): PLZ4_stream_t;
-  external libdrt name _PU+'LZ4_initStream';
+  cdecl; external libdrt name _PU+'LZ4_initStream';
 
   (*! Obsolete compression functions (since v1.7.3) *)
   function LZ4_compress(const src: PUTF8Char; dest: PUTF8Char; srcSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress';
+  cdecl; external libdrt name _PU+'LZ4_compress';
 
   function LZ4_compress_limitedOutput(const src: PUTF8Char; dest: PUTF8Char; srcSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_limitedOutput';
+  cdecl; external libdrt name _PU+'LZ4_compress_limitedOutput';
 
   function LZ4_compress_withState(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_withState';
+  cdecl; external libdrt name _PU+'LZ4_compress_withState';
 
   function LZ4_compress_limitedOutput_withState(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_limitedOutput_withState';
+  cdecl; external libdrt name _PU+'LZ4_compress_limitedOutput_withState';
 
   function LZ4_compress_continue(LZ4_streamPtr: PLZ4_stream_t; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_continue';
+  cdecl; external libdrt name _PU+'LZ4_compress_continue';
 
   function LZ4_compress_limitedOutput_continue(LZ4_streamPtr: PLZ4_stream_t; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_limitedOutput_continue';
+  cdecl; external libdrt name _PU+'LZ4_compress_limitedOutput_continue';
 
   (*! Obsolete decompression functions (since v1.8.0) *)
   function LZ4_uncompress(const source: PUTF8Char; dest: PUTF8Char; outputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_uncompress';
+  cdecl; external libdrt name _PU+'LZ4_uncompress';
 
   function LZ4_uncompress_unknownOutputSize(const source: PUTF8Char; dest: PUTF8Char; isize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_uncompress_unknownOutputSize';
+  cdecl; external libdrt name _PU+'LZ4_uncompress_unknownOutputSize';
 
   function LZ4_create(inputBuffer: PUTF8Char): Pointer;
-  external libdrt name _PU+'LZ4_create';
+  cdecl; external libdrt name _PU+'LZ4_create';
 
   function LZ4_sizeofStreamState(): Integer;
-  external libdrt name _PU+'LZ4_sizeofStreamState';
+  cdecl; external libdrt name _PU+'LZ4_sizeofStreamState';
 
   function LZ4_resetStreamState(state: Pointer; inputBuffer: PUTF8Char): Integer;
-  external libdrt name _PU+'LZ4_resetStreamState';
+  cdecl; external libdrt name _PU+'LZ4_resetStreamState';
 
   function LZ4_slideInputBuffer(state: Pointer): PUTF8Char;
-  external libdrt name _PU+'LZ4_slideInputBuffer';
+  cdecl; external libdrt name _PU+'LZ4_slideInputBuffer';
 
   (*! Obsolete streaming decoding functions (since v1.7.0) *)
   function LZ4_decompress_safe_withPrefix64k(const src: PUTF8Char; dst: PUTF8Char; compressedSize: Integer; maxDstSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_safe_withPrefix64k';
+  cdecl; external libdrt name _PU+'LZ4_decompress_safe_withPrefix64k';
 
   function LZ4_decompress_fast_withPrefix64k(const src: PUTF8Char; dst: PUTF8Char; originalSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_fast_withPrefix64k';
+  cdecl; external libdrt name _PU+'LZ4_decompress_fast_withPrefix64k';
 
   (*! Obsolete LZ4_decompress_fast variants (since v1.9.0) :
    *  These functions used to be faster than LZ4_decompress_safe(),
@@ -637,13 +637,13 @@ const
    *         As a consequence, use these functions in trusted environments with trusted data **only**.
    *)
   function LZ4_decompress_fast(const src: PUTF8Char; dst: PUTF8Char; originalSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_fast';
+  cdecl; external libdrt name _PU+'LZ4_decompress_fast';
 
   function LZ4_decompress_fast_continue(LZ4_streamDecode: PLZ4_streamDecode_t; const src: PUTF8Char; dst: PUTF8Char; originalSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_fast_continue';
+  cdecl; external libdrt name _PU+'LZ4_decompress_fast_continue';
 
   function LZ4_decompress_fast_usingDict(const src: PUTF8Char; dst: PUTF8Char; originalSize: Integer; const dictStart: PUTF8Char; dictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_decompress_fast_usingDict';
+  cdecl; external libdrt name _PU+'LZ4_decompress_fast_usingDict';
 
   (*! LZ4_resetStream() :
    *  An LZ4_stream_t structure must be initialized at least once.
@@ -652,7 +652,7 @@ const
    *  invoking LZ4_resetStream() will trigger deprecation warnings in the future.
    *)
   procedure LZ4_resetStream(streamPtr: PLZ4_stream_t);
-  external libdrt name _PU+'LZ4_resetStream';
+  cdecl; external libdrt name _PU+'LZ4_resetStream';
 
   (*! LZ4_compress_HC() :
    *  Compress data from `src` into `dst`, using the powerful but slower "HC" algorithm.
@@ -665,7 +665,7 @@ const
    *           or 0 if compression fails.
    *)
   function LZ4_compress_HC(const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; dstCapacity: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_HC';
+  cdecl; external libdrt name _PU+'LZ4_compress_HC';
 
   (*! LZ4_compress_HC_extStateHC() :
    *  Same as LZ4_compress_HC(), but using an externally allocated memory segment for `state`.
@@ -673,10 +673,10 @@ const
    *  Memory segment must be aligned on 8-bytes boundaries (which a normal malloc() should do properly).
    *)
   function LZ4_sizeofStateHC(): Integer;
-  external libdrt name _PU+'LZ4_sizeofStateHC';
+  cdecl; external libdrt name _PU+'LZ4_sizeofStateHC';
 
   function LZ4_compress_HC_extStateHC(stateHC: Pointer; const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; maxDstSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_HC_extStateHC';
+  cdecl; external libdrt name _PU+'LZ4_compress_HC_extStateHC';
 
   (*! LZ4_compress_HC_destSize() : v1.9.0+
    *  Will compress as much data as possible from `src`
@@ -687,7 +687,7 @@ const
    * `srcSizePtr` : on success, *srcSizePtr is updated to indicate how much bytes were read from `src`
    *)
   function LZ4_compress_HC_destSize(stateHC: Pointer; const src: PUTF8Char; dst: PUTF8Char; srcSizePtr: PInteger; targetDstSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_HC_destSize';
+  cdecl; external libdrt name _PU+'LZ4_compress_HC_destSize';
 
   (*! LZ4_createStreamHC() and LZ4_freeStreamHC() :
    *  These functions create and release memory for LZ4 HC streaming state.
@@ -696,19 +696,19 @@ const
    *  starting with LZ4_resetStreamHC_fast() to start a new stream of blocks.
    *)
   function LZ4_createStreamHC(): PLZ4_streamHC_t;
-  external libdrt name _PU+'LZ4_createStreamHC';
+  cdecl; external libdrt name _PU+'LZ4_createStreamHC';
 
   function LZ4_freeStreamHC(streamHCPtr: PLZ4_streamHC_t): Integer;
-  external libdrt name _PU+'LZ4_freeStreamHC';
+  cdecl; external libdrt name _PU+'LZ4_freeStreamHC';
 
   procedure LZ4_resetStreamHC_fast(streamHCPtr: PLZ4_streamHC_t; compressionLevel: Integer);
-  external libdrt name _PU+'LZ4_resetStreamHC_fast';
+  cdecl; external libdrt name _PU+'LZ4_resetStreamHC_fast';
 
   function LZ4_loadDictHC(streamHCPtr: PLZ4_streamHC_t; const dictionary: PUTF8Char; dictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_loadDictHC';
+  cdecl; external libdrt name _PU+'LZ4_loadDictHC';
 
   function LZ4_compress_HC_continue(streamHCPtr: PLZ4_streamHC_t; const src: PUTF8Char; dst: PUTF8Char; srcSize: Integer; maxDstSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_HC_continue';
+  cdecl; external libdrt name _PU+'LZ4_compress_HC_continue';
 
   (*! LZ4_compress_HC_continue_destSize() : v1.9.0+
    *  Similar to LZ4_compress_HC_continue(),
@@ -721,78 +721,78 @@ const
    *           Note that this function may not consume the entire input.
    *)
   function LZ4_compress_HC_continue_destSize(LZ4_streamHCPtr: PLZ4_streamHC_t; const src: PUTF8Char; dst: PUTF8Char; srcSizePtr: PInteger; targetDstSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compress_HC_continue_destSize';
+  cdecl; external libdrt name _PU+'LZ4_compress_HC_continue_destSize';
 
   function LZ4_saveDictHC(streamHCPtr: PLZ4_streamHC_t; safeBuffer: PUTF8Char; maxDictSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_saveDictHC';
+  cdecl; external libdrt name _PU+'LZ4_saveDictHC';
 
   function LZ4_initStreamHC(buffer: Pointer; size: NativeUInt): PLZ4_streamHC_t;
-  external libdrt name _PU+'LZ4_initStreamHC';
+  cdecl; external libdrt name _PU+'LZ4_initStreamHC';
 
   function LZ4_compressHC(const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC';
+  cdecl; external libdrt name _PU+'LZ4_compressHC';
 
   function LZ4_compressHC_limitedOutput(const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC_limitedOutput';
+  cdecl; external libdrt name _PU+'LZ4_compressHC_limitedOutput';
 
   function LZ4_compressHC2(const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2';
 
   function LZ4_compressHC2_limitedOutput(const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2_limitedOutput';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2_limitedOutput';
 
   function LZ4_compressHC_withStateHC(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC_withStateHC';
+  cdecl; external libdrt name _PU+'LZ4_compressHC_withStateHC';
 
   function LZ4_compressHC_limitedOutput_withStateHC(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC_limitedOutput_withStateHC';
+  cdecl; external libdrt name _PU+'LZ4_compressHC_limitedOutput_withStateHC';
 
   function LZ4_compressHC2_withStateHC(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2_withStateHC';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2_withStateHC';
 
   function LZ4_compressHC2_limitedOutput_withStateHC(state: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2_limitedOutput_withStateHC';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2_limitedOutput_withStateHC';
 
   function LZ4_compressHC_continue(LZ4_streamHCPtr: PLZ4_streamHC_t; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC_continue';
+  cdecl; external libdrt name _PU+'LZ4_compressHC_continue';
 
   function LZ4_compressHC_limitedOutput_continue(LZ4_streamHCPtr: PLZ4_streamHC_t; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC_limitedOutput_continue';
+  cdecl; external libdrt name _PU+'LZ4_compressHC_limitedOutput_continue';
 
   function LZ4_createHC(const inputBuffer: PUTF8Char): Pointer;
-  external libdrt name _PU+'LZ4_createHC';
+  cdecl; external libdrt name _PU+'LZ4_createHC';
 
   function LZ4_slideInputBufferHC(LZ4HC_Data: Pointer): PUTF8Char;
-  external libdrt name _PU+'LZ4_slideInputBufferHC';
+  cdecl; external libdrt name _PU+'LZ4_slideInputBufferHC';
 
   function LZ4_freeHC(LZ4HC_Data: Pointer): Integer;
-  external libdrt name _PU+'LZ4_freeHC';
+  cdecl; external libdrt name _PU+'LZ4_freeHC';
 
   function LZ4_compressHC2_continue(LZ4HC_Data: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2_continue';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2_continue';
 
   function LZ4_compressHC2_limitedOutput_continue(LZ4HC_Data: Pointer; const source: PUTF8Char; dest: PUTF8Char; inputSize: Integer; maxOutputSize: Integer; compressionLevel: Integer): Integer;
-  external libdrt name _PU+'LZ4_compressHC2_limitedOutput_continue';
+  cdecl; external libdrt name _PU+'LZ4_compressHC2_limitedOutput_continue';
 
   function LZ4_sizeofStreamStateHC(): Integer;
-  external libdrt name _PU+'LZ4_sizeofStreamStateHC';
+  cdecl; external libdrt name _PU+'LZ4_sizeofStreamStateHC';
 
   function LZ4_resetStreamStateHC(state: Pointer; inputBuffer: PUTF8Char): Integer;
-  external libdrt name _PU+'LZ4_resetStreamStateHC';
+  cdecl; external libdrt name _PU+'LZ4_resetStreamStateHC';
 
   procedure LZ4_resetStreamHC(streamHCPtr: PLZ4_streamHC_t; compressionLevel: Integer);
-  external libdrt name _PU+'LZ4_resetStreamHC';
+  cdecl; external libdrt name _PU+'LZ4_resetStreamHC';
 
   function LZ4_DECODER_RING_BUFFER_SIZE(mbs : NativeInt):NativeInt; inline;
 
   function LZ4F_isError(code: LZ4F_errorCode_t): Cardinal;
-  external libdrt name _PU+'LZ4F_isError';
+  cdecl; external libdrt name _PU+'LZ4F_isError';
 
   function LZ4F_getErrorName(code: LZ4F_errorCode_t): PUTF8Char;
-  external libdrt name _PU+'LZ4F_getErrorName';
+  cdecl; external libdrt name _PU+'LZ4F_getErrorName';
 
   function LZ4F_compressionLevel_max(): Integer;
-  external libdrt name _PU+'LZ4F_compressionLevel_max';
+  cdecl; external libdrt name _PU+'LZ4F_compressionLevel_max';
 
   (*! LZ4F_compressFrameBound() :
    *  Returns the maximum possible compressed size with LZ4F_compressFrame() given srcSize and preferences.
@@ -801,7 +801,7 @@ const
    *         It may also be relevant to LZ4F_compressUpdate() _only if_ no flush() operation is ever performed.
    *)
   function LZ4F_compressFrameBound(srcSize: NativeUInt; const preferencesPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressFrameBound';
+  cdecl; external libdrt name _PU+'LZ4F_compressFrameBound';
 
   (*! LZ4F_compressFrame() :
    *  Compress an entire srcBuffer into a valid LZ4 frame.
@@ -811,10 +811,10 @@ const
    *           or an error code if it fails (can be tested using LZ4F_isError())
    *)
   function LZ4F_compressFrame(dstBuffer: Pointer; dstCapacity: NativeUInt; const srcBuffer: Pointer; srcSize: NativeUInt; const preferencesPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressFrame';
+  cdecl; external libdrt name _PU+'LZ4F_compressFrame';
 
   function LZ4F_getVersion(): Cardinal;
-  external libdrt name _PU+'LZ4F_getVersion';
+  cdecl; external libdrt name _PU+'LZ4F_getVersion';
 
   (*! LZ4F_createCompressionContext() :
    * The first thing to do is to create a compressionContext object, which will be used in all compression operations.
@@ -826,10 +826,10 @@ const
    * Note: LZ4F_freeCompressionContext() works with NULL pointers (do nothing).
    *)
   function LZ4F_createCompressionContext(cctxPtr: PPLZ4F_cctx; version: Cardinal): LZ4F_errorCode_t;
-  external libdrt name _PU+'LZ4F_createCompressionContext';
+  cdecl; external libdrt name _PU+'LZ4F_createCompressionContext';
 
   function LZ4F_freeCompressionContext(cctx: PLZ4F_cctx): LZ4F_errorCode_t;
-  external libdrt name _PU+'LZ4F_freeCompressionContext';
+  cdecl; external libdrt name _PU+'LZ4F_freeCompressionContext';
 
   (*! LZ4F_compressBegin() :
    *  will write the frame header into dstBuffer.
@@ -839,7 +839,7 @@ const
    *           or an error code (which can be tested using LZ4F_isError())
    *)
   function LZ4F_compressBegin(cctx: PLZ4F_cctx; dstBuffer: Pointer; dstCapacity: NativeUInt; const prefsPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressBegin';
+  cdecl; external libdrt name _PU+'LZ4F_compressBegin';
 
   (*! LZ4F_compressBound() :
    *  Provides minimum dstCapacity required to guarantee success of
@@ -857,7 +857,7 @@ const
    * @return doesn't include frame header, as it was already generated by LZ4F_compressBegin().
    *)
   function LZ4F_compressBound(srcSize: NativeUInt; const prefsPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressBound';
+  cdecl; external libdrt name _PU+'LZ4F_compressBound';
 
   (*! LZ4F_compressUpdate() :
    *  LZ4F_compressUpdate() can be called repetitively to compress as much data as necessary.
@@ -870,7 +870,7 @@ const
    *           or an error code if it fails (which can be tested using LZ4F_isError())
    *)
   function LZ4F_compressUpdate(cctx: PLZ4F_cctx; dstBuffer: Pointer; dstCapacity: NativeUInt; const srcBuffer: Pointer; srcSize: NativeUInt; const cOptPtr: PLZ4F_compressOptions_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressUpdate';
+  cdecl; external libdrt name _PU+'LZ4F_compressUpdate';
 
   (*! LZ4F_flush() :
    *  When data must be generated and sent immediately, without waiting for a block to be completely filled,
@@ -882,7 +882,7 @@ const
    *  Note : LZ4F_flush() is guaranteed to be successful when dstCapacity >= LZ4F_compressBound(0, prefsPtr).
    *)
   function LZ4F_flush(cctx: PLZ4F_cctx; dstBuffer: Pointer; dstCapacity: NativeUInt; const cOptPtr: PLZ4F_compressOptions_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_flush';
+  cdecl; external libdrt name _PU+'LZ4F_flush';
 
   (*! LZ4F_compressEnd() :
    *  To properly finish an LZ4 frame, invoke LZ4F_compressEnd().
@@ -895,7 +895,7 @@ const
    *  A successful call to LZ4F_compressEnd() makes `cctx` available again for another compression task.
    *)
   function LZ4F_compressEnd(cctx: PLZ4F_cctx; dstBuffer: Pointer; dstCapacity: NativeUInt; const cOptPtr: PLZ4F_compressOptions_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressEnd';
+  cdecl; external libdrt name _PU+'LZ4F_compressEnd';
 
   (*! LZ4F_createDecompressionContext() :
    *  Create an LZ4F_dctx object, to track all decompression operations.
@@ -907,10 +907,10 @@ const
    *  That is, it should be == 0 if decompression has been completed fully and correctly.
    *)
   function LZ4F_createDecompressionContext(dctxPtr: PPLZ4F_dctx; version: Cardinal): LZ4F_errorCode_t;
-  external libdrt name _PU+'LZ4F_createDecompressionContext';
+  cdecl; external libdrt name _PU+'LZ4F_createDecompressionContext';
 
   function LZ4F_freeDecompressionContext(dctx: PLZ4F_dctx): LZ4F_errorCode_t;
-  external libdrt name _PU+'LZ4F_freeDecompressionContext';
+  cdecl; external libdrt name _PU+'LZ4F_freeDecompressionContext';
 
   (*! LZ4F_headerSize() : v1.9.0+
    *  Provide the header size of a frame starting at `src`.
@@ -922,7 +922,7 @@ const
    *         >= LZ4F_HEADER_SIZE_MIN bytes, and <= LZ4F_HEADER_SIZE_MAX bytes.
    *)
   function LZ4F_headerSize(const src: Pointer; srcSize: NativeUInt): NativeUInt;
-  external libdrt name _PU+'LZ4F_headerSize';
+  cdecl; external libdrt name _PU+'LZ4F_headerSize';
 
   (*! LZ4F_getFrameInfo() :
    *  This function extracts frame parameters (max blockSize, dictID, etc.).
@@ -968,7 +968,7 @@ const
    *  note 2 : frame parameters are *copied into* an already allocated LZ4F_frameInfo_t structure.
    *)
   function LZ4F_getFrameInfo(dctx: PLZ4F_dctx; frameInfoPtr: PLZ4F_frameInfo_t; const srcBuffer: Pointer; srcSizePtr: PNativeUInt): NativeUInt;
-  external libdrt name _PU+'LZ4F_getFrameInfo';
+  cdecl; external libdrt name _PU+'LZ4F_getFrameInfo';
 
   (*! LZ4F_decompress() :
    *  Call this function repetitively to regenerate data compressed in `srcBuffer`.
@@ -1002,7 +1002,7 @@ const
    *  After a frame is fully decoded, dctx can be used again to decompress another frame.
    *)
   function LZ4F_decompress(dctx: PLZ4F_dctx; dstBuffer: Pointer; dstSizePtr: PNativeUInt; const srcBuffer: Pointer; srcSizePtr: PNativeUInt; const dOptPtr: PLZ4F_decompressOptions_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_decompress';
+  cdecl; external libdrt name _PU+'LZ4F_decompress';
 
   (*! LZ4F_resetDecompressionContext() : added in v1.8.0
    *  In case of an error, the context is left in "undefined" state.
@@ -1010,13 +1010,13 @@ const
    *  This method can also be used to abruptly stop any unfinished decompression,
    *  and start a new one using same context resources. *)
   procedure LZ4F_resetDecompressionContext(dctx: PLZ4F_dctx);
-  external libdrt name _PU+'LZ4F_resetDecompressionContext';
+  cdecl; external libdrt name _PU+'LZ4F_resetDecompressionContext';
 
   function LZ4F_getErrorCode(functionResult: NativeUInt): LZ4F_errorCodes;
-  external libdrt name _PU+'LZ4F_getErrorCode';
+  cdecl; external libdrt name _PU+'LZ4F_getErrorCode';
 
   function LZ4F_getBlockSize(p1: Cardinal): NativeUInt;
-  external libdrt name _PU+'LZ4F_getBlockSize';
+  cdecl; external libdrt name _PU+'LZ4F_getBlockSize';
 
   (*! LZ4_createCDict() :
    *  When compressing multiple messages / blocks using the same dictionary, it's recommended to load it just once.
@@ -1024,10 +1024,10 @@ const
    *  LZ4_CDict can be created once and shared by multiple threads concurrently, since its usage is read-only.
    * `dictBuffer` can be released after LZ4_CDict creation, since its content is copied within CDict *)
   function LZ4F_createCDict(const dictBuffer: Pointer; dictSize: NativeUInt): PLZ4F_CDict;
-  external libdrt name _PU+'LZ4F_createCDict';
+  cdecl; external libdrt name _PU+'LZ4F_createCDict';
 
   procedure LZ4F_freeCDict(CDict: PLZ4F_CDict);
-  external libdrt name _PU+'LZ4F_freeCDict';
+  cdecl; external libdrt name _PU+'LZ4F_freeCDict';
 
   (*! LZ4_compressFrame_usingCDict() :
    *  Compress an entire srcBuffer into a valid LZ4 frame using a digested Dictionary.
@@ -1040,7 +1040,7 @@ const
    * @return : number of bytes written into dstBuffer.
    *           or an error code if it fails (can be tested using LZ4F_isError()) *)
   function LZ4F_compressFrame_usingCDict(cctx: PLZ4F_cctx; dst: Pointer; dstCapacity: NativeUInt; const src: Pointer; srcSize: NativeUInt; const cdict: PLZ4F_CDict; const preferencesPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressFrame_usingCDict';
+  cdecl; external libdrt name _PU+'LZ4F_compressFrame_usingCDict';
 
   (*! LZ4F_compressBegin_usingCDict() :
    *  Inits streaming dictionary compression, and writes the frame header into dstBuffer.
@@ -1050,14 +1050,14 @@ const
    * @return : number of bytes written into dstBuffer for the header,
    *           or an error code (which can be tested using LZ4F_isError()) *)
   function LZ4F_compressBegin_usingCDict(cctx: PLZ4F_cctx; dstBuffer: Pointer; dstCapacity: NativeUInt; const cdict: PLZ4F_CDict; const prefsPtr: PLZ4F_preferences_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_compressBegin_usingCDict';
+  cdecl; external libdrt name _PU+'LZ4F_compressBegin_usingCDict';
 
   (*! LZ4F_decompress_usingDict() :
    *  Same as LZ4F_decompress(), using a predefined dictionary.
    *  Dictionary is used "in place", without any preprocessing.
    *  It must remain accessible throughout the entire frame decoding. *)
   function LZ4F_decompress_usingDict(dctxPtr: PLZ4F_dctx; dstBuffer: Pointer; dstSizePtr: PNativeUInt; const srcBuffer: Pointer; srcSizePtr: PNativeUInt; const dict: Pointer; dictSize: NativeUInt; const decompressOptionsPtr: PLZ4F_decompressOptions_t): NativeUInt;
-  external libdrt name _PU+'LZ4F_decompress_usingDict';
+  cdecl; external libdrt name _PU+'LZ4F_decompress_usingDict';
 implementation
   function LZ4_DECODER_RING_BUFFER_SIZE(mbs : NativeInt):NativeInt; inline;
   begin

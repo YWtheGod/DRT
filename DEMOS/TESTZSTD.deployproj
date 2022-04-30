@@ -57,6 +57,15 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Linux64'">
+        <DeployFile Include="..\..\..\YW_DEMOS\DATA.PART.4" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>TESTZSTD\</RemoteDir>
+            <RemoteName>DATA.PART.4</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>False</Overwrite>
+        </DeployFile>
         <DeployFile Include="DATA.PART.3" Condition="'$(Config)'=='Release'">
             <RemoteDir>TESTZSTD\</RemoteDir>
             <RemoteName>DATA.PART.3</RemoteName>
@@ -66,7 +75,35 @@
             <RemoteCommand/>
             <Overwrite>False</Overwrite>
         </DeployFile>
+        <DeployFile Include="Linux64\Debug\TESTZSTD" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>TESTZSTD\</RemoteDir>
+            <RemoteName>TESTZSTD</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
         <DeployFile Include="DATA.PART.2" Condition="'$(Config)'=='Release'">
+            <RemoteDir>TESTZSTD\</RemoteDir>
+            <RemoteName>DATA.PART.2</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>False</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\..\YW_DEMOS\DATA.PART.1" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>TESTZSTD\</RemoteDir>
+            <RemoteName>DATA.PART.1</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>False</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\..\YW_DEMOS\DATA.PART.2" Condition="'$(Config)'=='Debug'">
             <RemoteDir>TESTZSTD\</RemoteDir>
             <RemoteName>DATA.PART.2</RemoteName>
             <DeployClass>File</DeployClass>
@@ -103,9 +140,9 @@
             <RemoteCommand/>
             <Overwrite>False</Overwrite>
         </DeployFile>
-        <DeployFile Include="Linux64\Release\glibc-2.31.tar" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\..\YW_DEMOS\DATA.PART.3" Condition="'$(Config)'=='Debug'">
             <RemoteDir>TESTZSTD\</RemoteDir>
-            <RemoteName>glibc-2.31.tar</RemoteName>
+            <RemoteName>DATA.PART.3</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
