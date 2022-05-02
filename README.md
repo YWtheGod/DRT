@@ -35,7 +35,7 @@ And, if you failed with linking linux project, copy two files from your android 
 开发LINUX项目时，将BIN.7Z内的mimalloc.o文件的带绝对路径文件名，填写到Project Options->Delphi Compiler->Linking->Options pass to the LD Linker栏目中
 另，如果你链接LINUX项目失败，从android SDK的build-tool 目录的lld-bin目录(例如 'C:\android\build-tools\33.0.0-rc2\lld-bin\*'), 复制全部2个文件到DELPHI安装路径的BIN目录下，将lld.exe改名为ld-linux.exe取代原来的(记得先备份) 
 
--更新 2022/05/02 添加FASTMM5(Windows)和mimalloc(非WINDOWS)两个优化内存管理器，大幅度提升多线程环境下的内存管理性能，替换WINDOWS下的MOVE函数为系统C运行库的memmove函数(只对WINDOWS有效，非WINDOWS平台已经用的是memmove没有修改必要)
+- 更新 2022/05/02 添加FASTMM5(Windows)和mimalloc(非WINDOWS)两个优化内存管理器，大幅度提升多线程环境下的内存管理性能，替换WINDOWS下的MOVE函数为系统C运行库的memmove函数(只对WINDOWS有效，非WINDOWS平台已经用的是memmove没有修改必要)
 
 - 更新 2022/04/24 支持FMX WebBrowser使用Edge引擎时去除WebView2Loader.DLL依赖，添加一堆WebView2相关接口定义单元，贡献自https://github.com/salvadordf/WebView4Delphi
 
