@@ -7,11 +7,13 @@ uses
   DRT.zstd,
   DRT.xxhash,
   DRT.zlib,
-  System.Diagnostics  ;
+  System.Diagnostics,
+  IOProxy;
 
 procedure DoTest; cdecl;
 
 implementation
+uses IOUtils;
 
 var data,c,d,cc,dd : TMemoryStream;
     ZC : TZstdCompressStream;
@@ -19,28 +21,34 @@ var data,c,d,cc,dd : TMemoryStream;
     ZLC : TZCompressionStream;
     ZLD : TZDeCompressionStream;
     W: TStopWatch;
+    df : String;
 
 procedure WriteInfo(Op : String; St : TStream);
 begin
   st.Position := 0;
-  write(Op,' in ',W.ElapsedMilliseconds,'ms   ');
-  writeln('Size: ',St.Size,'   XXHash3: ',THASHXXH3.HashAsString(St));
+  PutS(Op+' in '+W.ElapsedMilliseconds.ToString+'ms   Size: '+St.Size.ToString+
+    '   XXHash3: '+THASHXXH3.HashAsString(St));
   W.Reset;
   st.Position := 0;
 end;
 procedure DoTest; cdecl;
 begin
-  writeln('zstd version: ',ZSTD_VERSION_STRING);
+{$IF DEFINED(ANDROID) OR DEFINED(ANDROID64)}
+  df := TPath.Combine(TPath.GetDocumentsPath,'glibc-2.31.tar');
+{$ELSE}
+  df := 'glibc-2.31.tar';
+{$ENDIF}
+  PutS('zstd version: '+ZSTD_VERSION_STRING);
 //  readln;
-  writeln;
+  PutS('');
   try
     { TODO -oUser -cConsole Main : Insert code here }
     W := TStopWatch.Create;
     data := TMemoryStream.Create;
-    data.LoadFromFile('glibc-2.31.tar');
+    data.LoadFromFile(df);
     data.Position := 0;
-    writeln('Orginal Size: ',data.SIZE,'  Orginal XXHash3: ',THASHXXH3.HashAsString(data));
-    writeln;
+    PutS('Orginal Size: '+data.SIZE.ToString+'  Orginal XXHash3: '+THASHXXH3.HashAsString(data));
+    PutS('');
     C := TMemoryStream.Create;
     D := TMemoryStream.Create;
     cc := TMemoryStream.Create;
@@ -61,7 +69,7 @@ begin
     ZLD.Free;
     W.Stop;
     WriteInfo('Zlib Fastest DeCompress',dd);
-    writeln;
+    PutS('');
     data.Position := 0;
     c.Clear;
     W.Start;
@@ -77,7 +85,7 @@ begin
     D.CopyFrom(ZD);
     ZD.Free;
     WriteInfo('ZSTD Fastest DeCompress',d);
-    writeln;
+    PutS('');
     cc.Clear;
     data.Position := 0;
     W.Start;
@@ -94,7 +102,7 @@ begin
     ZLD.Free;
     W.Stop;
     WriteInfo('Zlib Default DeCompress',dd);
-    writeln;
+    PutS('');
     data.position := 0;
     c.Clear;
     W.Start;
@@ -111,7 +119,7 @@ begin
     ZD.Free;
     W.Stop;
     WriteInfo('ZSTD Default DeCompress',d);
-    writeln;
+    PutS('');
     data.Position := 0;
     cc.Clear;
     W.Start;
@@ -128,7 +136,7 @@ begin
     ZLD.Free;
     W.Stop;
     WriteInfo('Zlib MAX DeCompress',dd);
-    writeln;
+    PutS('');
     data.position := 0;
     c.Clear;
     W.Start;
@@ -145,7 +153,7 @@ begin
     ZD.Free;
     W.Stop;
     WriteInfo('ZSTD LV9 DeCompress',d);
-    writeln;
+    PutS('');
     data.Free;
     c.free;
     d.free;
@@ -153,10 +161,10 @@ begin
     dd.free;
   except
     on E: Exception do
-      Writeln(E.ClassName, ': ', E.Message);
+      PutS(E.ClassName+': '+E.Message);
   end;
-  writeln('Done! press ENTER to quit');
-  readln;
+  PutS('Done! press ENTER to quit');
+  GetS;
 end;
 
 end.

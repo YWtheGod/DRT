@@ -112,7 +112,7 @@
         <DCCReference Include="DRT.WIN.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vcledge.dcp"/>
-        <DCCReference Include="VCL\DRT.VCL.WV2Loader.pas"/>
+        <DCCReference Include="SOURCE\DRT.VCL.WV2Loader.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

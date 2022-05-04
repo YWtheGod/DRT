@@ -25,7 +25,7 @@
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$IMPLICITBUILD OFF}
+{$IMPLICITBUILD ON}
 
 requires
   rtl,
@@ -34,6 +34,6 @@ requires
   vcledge;
 
 contains
-  DRT.VCL.WV2Loader in 'VCL\DRT.VCL.WV2Loader.pas';
+  DRT.VCL.WV2Loader in 'SOURCE\DRT.VCL.WV2Loader.pas';
 
 end.

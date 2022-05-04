@@ -74,3 +74,5 @@ DEMOS/WIN32/*
 DEMOS/LINUX64/*
 WebView4Delphi/.github/FUNDING.yml
 WebView4Delphi/.g*
+DEMOS/Android/*
+DEMOS/Android64/*

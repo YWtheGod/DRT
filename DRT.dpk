@@ -32,19 +32,19 @@ requires
   rtl;
 
 contains
-  DRT.Zip in 'ZLIB\DRT.Zip.pas',
-  DRT.ZLib in 'ZLIB\DRT.ZLib.pas',
-  DRT.XXHASH in 'XXHASH\DRT.XXHASH.pas',
-  DRT.XXHASHLIB in 'XXHASH\DRT.XXHASHLIB.pas',
-  DRT.YWTypes in 'YWRTL\DRT.YWTypes.pas',
-  DRT.YWSTRUTIL in 'YWRTL\DRT.YWSTRUTIL.pas',
-  DRT.ZSTD in 'ZSTD\DRT.ZSTD.pas',
-  DRT.ZSTDLib in 'ZSTD\DRT.ZSTDLib.pas',
-  DRT.LIBNAME in 'DRT.LIBNAME.pas',
-  DRT.LZ4 in 'LZ4\DRT.LZ4.pas',
-  DRT.lz4lib in 'LZ4\DRT.lz4lib.pas',
-  DRT.Init in 'YWRTL\DRT.Init.pas',
-  FastMM5 in 'YWRTL\FastMM5.pas';
+  DRT.Zip in 'SOURCE\DRT.Zip.pas',
+  DRT.ZLib in 'SOURCE\DRT.ZLib.pas',
+  DRT.XXHASH in 'SOURCE\DRT.XXHASH.pas',
+  DRT.XXHASHLIB in 'SOURCE\DRT.XXHASHLIB.pas',
+  DRT.YWTypes in 'SOURCE\DRT.YWTypes.pas',
+  DRT.YWSTRUTIL in 'SOURCE\DRT.YWSTRUTIL.pas',
+  DRT.ZSTD in 'SOURCE\DRT.ZSTD.pas',
+  DRT.ZSTDLib in 'SOURCE\DRT.ZSTDLib.pas',
+  DRT.LIBNAME in 'SOURCE\DRT.LIBNAME.pas',
+  DRT.LZ4 in 'SOURCE\DRT.LZ4.pas',
+  DRT.lz4lib in 'SOURCE\DRT.lz4lib.pas',
+  DRT.Init in 'SOURCE\DRT.Init.pas',
+  FastMM5 in 'SOURCE\FastMM5.pas';
 
 end.
 

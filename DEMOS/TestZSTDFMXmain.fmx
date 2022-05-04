@@ -1,0 +1,27 @@
+object main: Tmain
+  Left = 0
+  Top = 0
+  Caption = 'Form2'
+  ClientHeight = 622
+  ClientWidth = 648
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Memo1: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    OnTap = Memo1Tap
+    DataDetectorTypes = []
+    ReadOnly = True
+    TextSettings.WordWrap = True
+    Align = Client
+    Size.Width = 648.000000000000000000
+    Size.Height = 622.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnClick = Memo1Click
+    Viewport.Width = 644.000000000000000000
+    Viewport.Height = 618.000000000000000000
+  end
+end

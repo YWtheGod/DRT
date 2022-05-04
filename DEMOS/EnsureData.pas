@@ -1,7 +1,7 @@
 unit EnsureData;
 
 interface
-uses sysutils,classes,zstd;
+uses sysutils,classes,DRT.ZSTD,IOProxy;
 
 const
   DataFile = 'glibc-2.31.tar';
@@ -9,20 +9,28 @@ const
 procedure CheckData;
 
 implementation
-uses YWTypes,xxhash;
+uses DRT.xxhash,IOUtils;
+var df,da : String;
 procedure CheckData;
 var G : TFileStream;
     D : TZSTDDecompressStream;
     M,F : TMemoryStream;
     buf : array[0..128*1024-1] of byte;
 begin
-  if fileexists(DataFile) then Exit;
-  Writeln('File ',DataFile,' not found. creating....');
+{$IF DEFINED(ANDROID) OR DEFINED(ANDROID64)}
+  df := TPath.Combine(TPath.GetDocumentsPath,DataFile);
+  da := TPath.Combine(TPath.GetDocumentsPath,'DATA.PART.');
+{$ELSE}
+  df := DataFile;
+  da := 'DATA.PART.';
+{$ENDIF}
+  if fileexists(df) then Exit;
+  PutS('File '+df+' not found. creating....');
   F := TMemoryStream.Create;
   M := TMemoryStream.Create;
   try
     for var I := '1' to '4' do begin
-      G := TFileStream.Create('DATA.PART.'+i,fmOpenRead);
+      G := TFileStream.Create(da+i,fmOpenRead);
       try
         var s : Cardinal;
         repeat
@@ -41,14 +49,14 @@ begin
       D.Free;
     end;
     F.Position := 0;
-    writeln(F.Size,' ',THASHXXH3.HashAsString(F));
+    PutS(F.Size.ToString+' '+THASHXXH3.HashAsString(F));
     F.Position := 0;
-    F.SaveToFile(datafile);
+    F.SaveToFile(df);
   finally
     M.Free;
     F.Free;
   end;
-  Writeln('File created.');
-  Writeln;
+  PutS('File created.');
+  PutS('');
 end;
 end.

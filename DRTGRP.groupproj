@@ -24,6 +24,9 @@
         <Projects Include="DEMOS\TestMMConsole.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="DEMOS\TestZSTDFMXdproj.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -95,25 +98,52 @@
     <Target Name="TestMMConsole:Make">
         <MSBuild Projects="DEMOS\TestMMConsole.dproj" Targets="Make"/>
     </Target>
+    <Target Name="TestZSTDFMXdproj">
+        <MSBuild Projects="DEMOS\TestZSTDFMXdproj.dproj"/>
+    </Target>
+    <Target Name="TestZSTDFMXdproj:Clean">
+        <MSBuild Projects="DEMOS\TestZSTDFMXdproj.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestZSTDFMXdproj:Make">
+        <MSBuild Projects="DEMOS\TestZSTDFMXdproj.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="DRT;DRT_WIN;DRT_VCL;TESTZSTD;TESTVCLEDGE;TESTFMXEDGE;TestMMConsole"/>
+        <CallTarget Targets="DRT;DRT_WIN;DRT_VCL;TESTZSTD;TESTVCLEDGE;TESTFMXEDGE;TestMMConsole;TestZSTDFMXdproj"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;DRT_VCL:Clean;TESTZSTD:Clean;TESTVCLEDGE:Clean;TESTFMXEDGE:Clean;TestMMConsole:Clean"/>
+        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;DRT_VCL:Clean;TESTZSTD:Clean;TESTVCLEDGE:Clean;TESTFMXEDGE:Clean;TestMMConsole:Clean;TestZSTDFMXdproj:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="DRT:Make;DRT_WIN:Make;DRT_VCL:Make;TESTZSTD:Make;TESTVCLEDGE:Make;TESTFMXEDGE:Make;TestMMConsole:Make"/>
+        <CallTarget Targets="DRT:Make;DRT_WIN:Make;DRT_VCL:Make;TESTZSTD:Make;TESTVCLEDGE:Make;TESTFMXEDGE:Make;TestMMConsole:Make;TestZSTDFMXdproj:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='DRT'">
+        <BuildGroupProject Include="DEMOS\TestZSTDFMXdproj.dproj">
+            <ProjectGuid>{0D0587D7-534D-41FB-94A5-91C5DB6597AD}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
         <BuildGroupProject Include="DEMOS\TestMMConsole.dproj">
             <ProjectGuid>{0B71D844-DA41-4749-AE48-0AA30DC03B65}</ProjectGuid>
             <Configurations>Release</Configurations>
             <Platforms>Win64</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
+        <BuildGroupProject Include="DEMOS\TESTFMXEDGE.dproj">
+            <ProjectGuid>{2F973D83-6A89-43FA-98ED-2E0D89FBA795}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
+        </BuildGroupProject>
         <BuildGroupProject Include="DRT.VCL.dproj">
             <ProjectGuid>{972CA42A-313B-46E7-AA65-B16D6506681A}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DRT.WIN.dproj">
+            <ProjectGuid>{E3A390E0-66B0-427B-B57A-C5E07798D674}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
             <Platforms>Win32;Win64</Platforms>
             <Enabled>True</Enabled>
@@ -124,22 +154,10 @@
             <Platforms>Win64</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
-        <BuildGroupProject Include="DRT.WIN.dproj">
-            <ProjectGuid>{E3A390E0-66B0-427B-B57A-C5E07798D674}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
-            <Platforms>Win32;Win64</Platforms>
-            <Enabled>True</Enabled>
-        </BuildGroupProject>
-        <BuildGroupProject Include="DEMOS\TESTFMXEDGE.dproj">
-            <ProjectGuid>{2F973D83-6A89-43FA-98ED-2E0D89FBA795}</ProjectGuid>
-            <Configurations>Debug</Configurations>
-            <Platforms>Win32</Platforms>
-            <Enabled>False</Enabled>
-        </BuildGroupProject>
         <BuildGroupProject Include="DRT.dproj">
             <ProjectGuid>{A0DA119A-61D9-460D-8A47-3AA296921B44}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
-            <Platforms>Win64;Win32;Linux64</Platforms>
+            <Platforms>Win64;Win32;Linux64;Android;Android64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
         <BuildGroupProject Include="DEMOS\TESTVCLEDGE.dproj">

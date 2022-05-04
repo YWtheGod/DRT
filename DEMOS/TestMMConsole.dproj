@@ -198,7 +198,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Linux64)'!=''">
-        <DCC_LinkerOptions>D:\Users\YW\Documents\Embarcadero\Studio\Projects\YWLIB\DRT\CLIB\DRT\DRT_MIMALLOC\obj\static.o</DCC_LinkerOptions>
+        <DCC_LinkerOptions>D:\Users\YW\Documents\Embarcadero\Studio\Projects\YWLIB\DRT\BIN\drt_override.linux64.o</DCC_LinkerOptions>
         <Manifest_File>..\..\..\..\TEST\TESTMM\(None)</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">

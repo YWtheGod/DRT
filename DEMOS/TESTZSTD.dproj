@@ -75,6 +75,12 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Linux64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Linux64)'!=''">
+        <Cfg_2_Linux64>true</Cfg_2_Linux64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
         <Cfg_2_Win32>true</Cfg_2_Win32>
         <CfgParent>Cfg_2</CfgParent>
@@ -212,6 +218,9 @@ $(PreBuildEvent)]]></PreBuildEvent>
         <DCC_DebugInformation>0</DCC_DebugInformation>
         <DCC_Inlining>auto</DCC_Inlining>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Linux64)'!=''">
+        <DCC_LinkerOptions>D:\Users\YW\Documents\Embarcadero\Studio\Projects\YWLIB\DRT\BIN\drt_override.linux64.o</DCC_LinkerOptions>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>..\..\..\..\..\YW_DEMOS\(None)</Manifest_File>
@@ -227,6 +236,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
         </DelphiCompile>
         <DCCReference Include="TestUnit.pas"/>
         <DCCReference Include="EnsureData.pas"/>
+        <DCCReference Include="IOProxy.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
