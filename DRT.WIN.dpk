@@ -75,6 +75,7 @@ contains
   uWVMiscFunctions in 'SOURCE\uWVMiscFunctions.pas',
   uWVTypes in 'SOURCE\uWVTypes.pas',
   uWVTypeLibrary in 'SOURCE\uWVTypeLibrary.pas',
-  DRT.WIN.WV2Loader in 'SOURCE\DRT.WIN.WV2Loader.pas';
+  DRT.WIN.WV2Loader in 'SOURCE\DRT.WIN.WV2Loader.pas',
+  uWVBrowserBase in 'SOURCE\uWVBrowserBase.pas';
 
 end.

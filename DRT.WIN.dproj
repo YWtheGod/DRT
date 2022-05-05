@@ -150,6 +150,7 @@
         <DCCReference Include="SOURCE\uWVTypes.pas"/>
         <DCCReference Include="SOURCE\uWVTypeLibrary.pas"/>
         <DCCReference Include="SOURCE\DRT.WIN.WV2Loader.pas"/>
+        <DCCReference Include="SOURCE\uWVBrowserBase.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
