@@ -17,7 +17,7 @@ var G : TFileStream;
     M,F : TMemoryStream;
     buf : array[0..128*1024-1] of byte;
 begin
-{$IF DEFINED(ANDROID) OR DEFINED(ANDROID64)}
+{$IFDEF ANDROID}
   df := TPath.Combine(TPath.GetDocumentsPath,DataFile);
   da := TPath.Combine(TPath.GetDocumentsPath,'DATA.PART.');
 {$ELSE}

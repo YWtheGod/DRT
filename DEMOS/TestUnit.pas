@@ -33,7 +33,7 @@ begin
 end;
 procedure DoTest; cdecl;
 begin
-{$IF DEFINED(ANDROID) OR DEFINED(ANDROID64)}
+{$IFDEF ANDROID}
   df := TPath.Combine(TPath.GetDocumentsPath,'glibc-2.31.tar');
 {$ELSE}
   df := 'glibc-2.31.tar';

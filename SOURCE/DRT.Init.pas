@@ -9,7 +9,7 @@ uses
   drt.LIBNAME;
 var
   OriginMM : TMemoryManagerEx;
-{$IF DEFINED(ANDROID) OR DEFINED(ANDROID64)}
+{$IFDEF ANDROID}
 procedure __emutls_get_address; external 'libgcc_real.a';
 {$ENDIF}
 {$IFDEF LINUX64}
