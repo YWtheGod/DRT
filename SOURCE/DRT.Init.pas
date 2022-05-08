@@ -2,7 +2,7 @@
 
 interface
 uses
-{$IFDEF WIN64}
+{$IFDEF MSWINDOWS}
   fastmm5,
 {$ENDIF}
   DRT.YWSTRUTIL,
@@ -40,34 +40,24 @@ Tpatch = packed record
 end;
 Ppatch =^TPatch;
 var
-  patch : TPatch;
+  newmove,oldmove : TPatch;
 {$IFDEF WIN32}
 procedure _memmove; cdecl; external 'MSVCRT.DLL' name 'memmove';
 {$ELSE}
 procedure memmove; cdecl; external 'MSVCRT.DLL';
 {$ENDIF}
 
-procedure PatchMove;
+procedure PatchMove(var patch,old : TPatch);
 var
   Protect, OldProtect : DWORD;
   A : NativeInt;
 begin
-  with patch do begin
-    p1 := p1value;
-    p2 := p2value;
-  {$IFDEF WIN32}
-    p3 := $0CC48366;
-    p4 := $C3;
-    offset := PCardinal(NativeInt(@_memmove)+2)^;
-  {$ELSE}
-    offset := NativeInt(@memmove)+6+PInteger(NativeInt(@memmove)+2)^-NativeInt(@system.Move)-9;
-  {$ENDIF}
-    VirtualProtect(@System.Move, 256, PAGE_EXECUTE_READWRITE, @OldProtect);
-    if PCardinal(@System.Move)^ <> p1value then {Check if Already Patched}
-      PPatch(@System.Move)^ := patch;
-    VirtualProtect(@System.Move, 256, OldProtect, @Protect);
-    FlushInstructionCache(GetCurrentProcess, @System.Move, 256);
-  end;
+  VirtualProtect(@System.Move, 256, PAGE_EXECUTE_READWRITE, @OldProtect);
+  old := PPatch(@System.Move)^;
+  if PCardinal(@System.Move)^ <> patch.p1 then {Check if Already Patched}
+    PPatch(@System.Move)^ := patch;
+  VirtualProtect(@System.Move, 256, OldProtect, @Protect);
+  FlushInstructionCache(GetCurrentProcess, @System.Move, 256);
 end;
 
 procedure PatchFunc(P1,P2 : Pointer);
@@ -160,14 +150,26 @@ initialization
 {$ENDIF}
 {$IFDEF MSWINDOWS}
   GetMemoryManager(OriginMM);
+{$IFDEF WIN64}
   PatchDRTMM;
-  PatchMove;
+  with newmove do begin
+    p1 := p1value;
+    p2 := p2value;
+  {$IFDEF WIN32}
+    p3 := $0CC48366;
+    p4 := $C3;
+    offset := PCardinal(NativeInt(@_memmove)+2)^;
+  {$ELSE}
+    offset := NativeInt(@memmove)+6+PInteger(NativeInt(@memmove)+2)^-NativeInt(@system.Move)-9;
+  {$ENDIF}
+  end;
+  PatchMove(newmove,oldmove);
+{$ENDIF}
   PatchIntoStr;
 {$ENDIF}
 finalization
-{$IFDEF MSWINDOWS}
-  SetMemoryManager(OriginMM);
-//  zlibVersion;
+{$IFDEF WIN64}
+  PatchMove(oldmove,newmove);
 {$ENDIF}
 {$IFDEF LINUX64}
   DRT_Done;
