@@ -23,6 +23,7 @@ const
 {$IFDEF WIN32}
   p1value = $FF525051;
   p2value = $15;
+  p3value = $C30CC483;
 {$ELSE}
   p1value = $FFCA8748;
   p2value = $25;
@@ -35,7 +36,6 @@ Tpatch = packed record
   Offset : integer;
 {$IFDEF WIN32}
   p3 : Cardinal;
-  p4 : byte;
 {$ENDIF}
 end;
 Ppatch =^TPatch;
@@ -58,6 +58,17 @@ begin
     PPatch(@System.Move)^ := patch;
   VirtualProtect(@System.Move, 256, OldProtect, @Protect);
   FlushInstructionCache(GetCurrentProcess, @System.Move, 256);
+end;
+type
+{$IFDEF WIN32}
+  TFuncPatch = array[0..4] of byte;
+{$ELSE}
+  TFuncPatch = Pointer;
+{$ENDIF}
+  PFuncPatch = ^TFuncPatch;
+var K1,K2,K3,K4 : record
+  P : PFuncPatch;
+  V : TFuncPatch;
 end;
 
 procedure PatchFunc(P1,P2 : Pointer);
@@ -109,19 +120,50 @@ end;
 procedure SetDelphiMM(var C:TMemoryManagerEx);
   cdecl; external libdrt;
 
-function GetP(const P:Pointer;const A,B:Integer) : PPointer; inline;
+function GetP(const P:Pointer;const A,B:Integer) : PFuncPatch; inline;
 begin
-  Result := PPointer(NativeInt(P)+PInteger(NativeInt(P)+A)^+B);
+  Result := PFuncPatch(NativeInt(P)+PInteger(NativeInt(P)+A)^+B);
 end;
 
-procedure PatchMem(P1,P2 : Pointer);
+procedure PatchMem(P1:PFuncPatch; P2 : TFuncPatch);
 var
   Protect, OldProtect : DWORD;
 begin
   VirtualProtect(P1, 256, PAGE_EXECUTE_READWRITE, @OldProtect);
-  PPointer(P1)^ := P2;
+  P1^ := P2;
   VirtualProtect(P1, 256, OldProtect, @Protect);
   FlushInstructionCache(GetCurrentProcess, P1, 256);
+end;
+
+procedure RestoreFunc;
+begin
+  PatchMem(K1.P,K1.V);
+  PatchMem(K2.P,K2.V);
+  PatchMem(K3.P,K3.V);
+  PatchMem(K4.P,K4.V);
+end;
+
+
+//    void* (*malloc) (size_t);
+function Cmalloc(s : NativeInt):Pointer; cdecl;
+begin
+  Getmem(Result,s);
+end;
+//    void (*free) (void*);
+procedure Cfree(P : Pointer); cdecl;
+begin
+  Freemem(P);
+end;
+//    void* (*realloc)(void*, size_t);
+function Crealloc(P:Pointer; s : NativeInt):Pointer; cdecl;
+begin
+  Result := P;
+  ReallocMem(Result,s);
+end;
+//    void* (*calloc)(size_t, size_t);
+function Ccalloc(s1,s2 : NativeInt):Pointer; cdecl;
+begin
+  Result := AllocMem(s1*s2);
 end;
 
 procedure PatchDRTMM;
@@ -130,16 +172,32 @@ var C : TMemoryManagerEx;
 begin
 {$IFDEF WIN32}
   SetDelphiMM(C);
-  PatchFunc(@C.GetMem,@OriginMM.GetMem);
-  PatchFunc(@C.FreeMem,@OriginMM.FreeMem);
-  PatchFunc(@C.ReallocMem,@OriginMM.ReallocMem);
-  PatchFunc(@C.AllocMem,@OriginMM.AllocMem);
+  K1.P := @C.GetMem;
+  K2.P := @C.FreeMem;
+  K3.P := @C.ReallocMem;
+  K4.P := @C.AllocMem;
+  K1.V := K1.P^;
+  K2.V := K2.P^;
+  K3.V := K3.P^;
+  K4.V := K4.P^;
+  PatchFunc(K1.P,@Cmalloc);
+  PatchFunc(K2.P,@Cfree);
+  PatchFunc(K3.P,@Crealloc);
+  PatchFunc(K4.P,@Ccalloc);
 {$ELSE}
-  P := GetP(@SetDelphiMM,2,6);
-  PatchMem(GetP(P^,3,7),@OriginMM.GetMem);
-  PatchMem(GetP(P^,13,17),@OriginMM.FreeMem);
-  PatchMem(GetP(P^,24,28),@OriginMM.ReallocMem);
-  PatchMem(GetP(P^,35,39),@OriginMM.AllocMem);
+  P := Pointer(GetP(@SetDelphiMM,2,6));
+  K1.P := GetP(P^,3,7);
+  K2.P := GetP(P^,13,17);
+  K3.P := GetP(P^,24,28);
+  K4.P := GetP(P^,35,39);
+  K1.V := K1.P^;
+  K2.V := K2.P^;
+  K3.V := K3.P^;
+  K4.V := K4.P^;
+  PatchMem(K1.P,@Cmalloc);
+  PatchMem(K2.P,@Cfree);
+  PatchMem(K3.P,@Crealloc);
+  PatchMem(K4.P,@Ccalloc);
 {$ENDIF}
 end;
 
@@ -150,25 +208,23 @@ initialization
 {$ENDIF}
 {$IFDEF MSWINDOWS}
   GetMemoryManager(OriginMM);
-{$IFDEF WIN64}
   PatchDRTMM;
   with newmove do begin
     p1 := p1value;
     p2 := p2value;
   {$IFDEF WIN32}
-    p3 := $0CC48366;
-    p4 := $C3;
+    p3 := p3value;
     offset := PCardinal(NativeInt(@_memmove)+2)^;
   {$ELSE}
     offset := NativeInt(@memmove)+6+PInteger(NativeInt(@memmove)+2)^-NativeInt(@system.Move)-9;
   {$ENDIF}
   end;
   PatchMove(newmove,oldmove);
-{$ENDIF}
   PatchIntoStr;
 {$ENDIF}
 finalization
-{$IFDEF WIN64}
+{$IFDEF MSWINDOWS}
+  RestoreFunc;
   PatchMove(oldmove,newmove);
 {$ENDIF}
 {$IFDEF LINUX64}
