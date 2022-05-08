@@ -42,7 +42,7 @@ Ppatch =^TPatch;
 var
   patch : TPatch;
 {$IFDEF WIN32}
-procedure _memmove; cdecl; external 'MSVCRT.DLL';
+procedure _memmove; cdecl; external 'MSVCRT.DLL' name 'memmove';
 {$ELSE}
 procedure memmove; cdecl; external 'MSVCRT.DLL';
 {$ENDIF}

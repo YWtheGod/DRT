@@ -1431,7 +1431,7 @@ digit_6:
   R^ := UInt64(Data2[a]);
   inc(R);
 digit_2:
-  PDWord(R)^ := PDWord(@Data1[j])^;
+  PDWord(R)^ := PDWord(NativeInt(@Data2[j])+4)^;
   goto done;
 digit_9:
   a := j div 100000;
@@ -1460,7 +1460,7 @@ digit_7:
   R^ := UInt64(Data2[a]);
   inc(R);
 digit_3:
-  P3Word(R)^ := P3Word(@Data1[j])^;
+  P3Word(R)^ := P3Word(NativeInt(@Data2[j])+2)^;
 done:
 end;
 
@@ -1527,7 +1527,7 @@ digit_6:
   R^ := UInt64(Data2[a]);
   inc(R);
 digit_2:
-  PDWord(R)^ := PDWord(@Data1[j])^;
+  PDWord(R)^ := PDWord(NativeInt(@Data2[j])+4)^;
   goto done;
 digit_9:
   a := j div 100000;
@@ -1556,7 +1556,7 @@ digit_7:
   R^ := UInt64(Data2[a]);
   inc(R);
 digit_3:
-  P3Word(R)^ := P3Word(@Data1[j])^;
+  P3Word(R)^ := P3Word(NativeInt(@Data2[j])+2)^;
 done:
 end;
 
@@ -1846,7 +1846,7 @@ digit_7:
   R^ := UInt64(data2[a]);
   inc(R);
 digit_3:
-  P3WORD(R)^:=P3WORD(@data1[j])^;
+  P3WORD(R)^:=P3WORD(NativeInt(@data2[j])+2)^;
   goto done;
 digit_18:
   R^ := UInt64(data2[l]);
@@ -1865,7 +1865,7 @@ digit_6:
   R^ := UInt64(data2[a]);
   inc(R);
 digit_2:
-  PDWORD(R)^:=PDWORD(@data1[j])^;
+  PDWORD(R)^:=PDWORD(NativeInt(@data2[j])+4)^;
   goto done;
 digit_17:
   a := k div 10000;
@@ -2321,7 +2321,7 @@ digit_7:
   R^ := UInt64(data2[a]);
   inc(R);
 digit_3:
-  P3WORD(R)^:=P3WORD(@data1[j])^;
+  P3WORD(R)^:=P3WORD(NativeInt(@data2[j])+2)^;
   goto done;
 digit_18:
   R^ := UInt64(data2[l]);
@@ -2340,7 +2340,7 @@ digit_6:
   R^ := UInt64(data2[a]);
   inc(R);
 digit_2:
-  PDWORD(R)^:=PDWORD(@data1[j])^;
+  PDWORD(R)^:=PDWORD(NativeInt(@data2[j])+4)^;
   goto done;
 digit_17:
   a := k div 10000;
@@ -2423,7 +2423,7 @@ digit_6:
   PW64(P)^ := UInt64(Data2[a]);
   inc(P,4);
 digit_2:
-  PDWord(P)^ := PDWord(@Data1[j])^;
+  PDWord(P)^ := PDWord(NativeInt(@Data2[j])+4)^;
   inc(P,2);
   goto done;
 digit_9:
@@ -2635,7 +2635,7 @@ digit_7:
   PW64(P)^ := UInt64(data2[a]);
   inc(P,4);
 digit_3:
-  P3WORD(P)^:=P3WORD(@data1[j])^;
+  P3WORD(P)^:=P3WORD(NativeInt(@data2[j])+2)^;
   inc(P,3);
   goto done;
 digit_18:
@@ -2655,7 +2655,7 @@ digit_6:
   PW64(P)^ := UInt64(data2[a]);
   inc(P,4);
 digit_2:
-  PDWORD(P)^:=PDWORD(@data1[j])^;
+  PDWORD(P)^:=PDWORD(NativeInt(@data2[j])+4)^;
   inc(P,2);
   goto done;
 digit_17:
