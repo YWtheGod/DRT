@@ -2,7 +2,7 @@
 
 interface
 uses
-{$IFDEF MSWINDOWS}
+{$IFDEF WIN64}
   fastmm5,
 {$ENDIF}
   DRT.YWSTRUTIL,
@@ -18,7 +18,7 @@ procedure DRT_Done; external libdrt name _PU+'DRT_Done';
 {$ENDIF}
 implementation
 {$IFDEF MSWINDOWS}
-uses Windows,SysUtils,YWSTRUtil;
+uses Windows,SysUtils;
 const
 {$IFDEF WIN32}
   p1value = $FF525051;
@@ -94,25 +94,25 @@ var
   O7,N7 : function (Value: UInt64; Digits: Integer): string;
 begin
   O1 := SysUtils.InttoStr;
-  N1 := YWSTRUtil.IntToStr2;
+  N1 := DRT.YWSTRUtil.IntToStr2;
   PatchFunc(@O1,@N1);
   O2 := SysUtils.InttoStr;
-  N2 := YWSTRUtil.IntToStr2;
+  N2 := DRT.YWSTRUtil.IntToStr2;
   PatchFunc(@O2,@N2);
   O3 := SysUtils.UInttoStr;
-  N3 := YWSTRUtil.UIntToStr2;
+  N3 := DRT.YWSTRUtil.UIntToStr2;
   PatchFunc(@O3,@N3);
   O4 := SysUtils.UInttoStr;
-  N4 := YWSTRUtil.UIntToStr2;
+  N4 := DRT.YWSTRUtil.UIntToStr2;
   PatchFunc(@O4,@N4);
   O5 := SysUtils.IntToHex;
-  N5 := YWSTRUtil.IntToHex2;
+  N5 := DRT.YWSTRUtil.IntToHex2;
   PatchFunc(@O5,@N5);
   O6 := SysUtils.IntToHex;
-  N6 := YWSTRUtil.IntToHex2;
+  N6 := DRT.YWSTRUtil.IntToHex2;
   PatchFunc(@O6,@N6);
   O7 := SysUtils.IntToHex;
-  N7 := YWSTRUtil.IntToHex2;
+  N7 := DRT.YWSTRUtil.IntToHex2;
   PatchFunc(@O7,@N7);
 end;
 
