@@ -44,7 +44,9 @@ contains
   DRT.LZ4 in 'SOURCE\DRT.LZ4.pas',
   DRT.lz4lib in 'SOURCE\DRT.lz4lib.pas',
   DRT.Init in 'SOURCE\DRT.Init.pas',
-  FastMM5 in 'SOURCE\FastMM5.pas';
+  FastMM5 in 'SOURCE\FastMM5.pas',
+  DRT.libuv in 'SOURCE\DRT.libuv.pas',
+  DRT.UV in 'SOURCE\DRT.UV.pas';
 
 end.
 

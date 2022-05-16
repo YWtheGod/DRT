@@ -5,7 +5,7 @@
         <ProjectVersion>19.4</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>32915</TargetedPlatforms>
         <AppType>Package</AppType>
@@ -216,6 +216,8 @@
         <DCCReference Include="SOURCE\DRT.lz4lib.pas"/>
         <DCCReference Include="SOURCE\DRT.Init.pas"/>
         <DCCReference Include="SOURCE\FastMM5.pas"/>
+        <DCCReference Include="SOURCE\DRT.libuv.pas"/>
+        <DCCReference Include="SOURCE\DRT.UV.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -260,6 +262,12 @@
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\DRT.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>DRT.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\Linux64\bplDRT.so" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Linux64">
+                        <RemoteName>bplDRT.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
