@@ -76,6 +76,8 @@ contains
   uWVTypes in 'SOURCE\uWVTypes.pas',
   uWVTypeLibrary in 'SOURCE\uWVTypeLibrary.pas',
   DRT.WIN.WV2Loader in 'SOURCE\DRT.WIN.WV2Loader.pas',
-  uWVBrowserBase in 'SOURCE\uWVBrowserBase.pas';
+  uWVBrowserBase in 'SOURCE\uWVBrowserBase.pas',
+  uWVCoreWebView2Profile in 'SOURCE\uWVCoreWebView2Profile.pas',
+  uWVCoreWebView2ControllerOptions in 'SOURCE\uWVCoreWebView2ControllerOptions.pas';
 
 end.

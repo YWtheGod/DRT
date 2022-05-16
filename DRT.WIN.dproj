@@ -155,6 +155,8 @@
         <DCCReference Include="SOURCE\uWVTypeLibrary.pas"/>
         <DCCReference Include="SOURCE\DRT.WIN.WV2Loader.pas"/>
         <DCCReference Include="SOURCE\uWVBrowserBase.pas"/>
+        <DCCReference Include="SOURCE\uWVCoreWebView2Profile.pas"/>
+        <DCCReference Include="SOURCE\uWVCoreWebView2ControllerOptions.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
