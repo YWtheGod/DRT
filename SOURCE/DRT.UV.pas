@@ -4,7 +4,7 @@ interface
 
 uses SysUtils, classes, System.Net.Socket, DRT.libuv, DRT.YWTypes, SyncObjs,
 {$IFDEF MSWINDOWS}
-  Winapi.Windows, Winapi.WinSock2, Winapi.ShellAPI, Winapi.IpExport;
+  Winapi.Windows, Winapi.WinSock2, Winapi.ShellAPI, Winapi.IpExport, Winapi.WinSock;
 {$ENDIF}
 {$IFDEF POSIX}
 POSIX.SysTypes, Posix.ArpaInet, Posix.NetinetIn, Posix.SysSocket,
@@ -18,7 +18,6 @@ type
   TUVFileHandle = uv_os_fd_t;
   TUVBuf = uv_buf_t;
   TUVNotify = reference to procedure;
-  TUVHandleEvent = procedure(Sender : TUVHandle) of object;
   TUVIntNotify = reference to procedure(i: integer);
   TUV2IntNotify = reference to procedure(i, j: integer);
   TUVWalkNotify = reference to procedure(Sender: TUVHandle);
@@ -157,12 +156,10 @@ type
   end;
 
   TUVTimer = class;
-  TUVTimerEvent = procedure(T:TUVTimer) of object;
   TUV_Timer = record
     T : uv_timer_t;
     reserved : array[0..15] of byte;
     FCB: TUVNotify;
-    FEV,FEV2: TUVTimerEvent;
   end;
   PUV_Timer = ^TUV_Timer;
   TUVTimer = class(TUVHandle<TUV_Timer>)
@@ -170,9 +167,7 @@ type
     FTimeOut: UInt64;
     function GetInterval: UInt64;
     procedure SetInterval(const Value: UInt64);
-    procedure SetOnTimer(const Value: TUVTimerEvent);
     procedure SetTimeOut(const Value: UInt64);
-    function GetOnTimer: TUVTimerEvent;
   protected
     frunning : boolean;
     procedure Init; override;
@@ -180,116 +175,79 @@ type
     class procedure CB(var handle: uv_timer_t); cdecl; static;
   public
     function Start(F: TUVNotify): integer; overload;
-    function Start(F: TUVTimerEvent=nil): integer; overload;
     function Stop: integer;
     function Again: integer;
     function DueIn: UInt64;
     property Interval: UInt64 read GetInterval write SetInterval;
-    property OnTimer : TUVTimerEvent read GetOnTimer write SetOnTimer;
     property TimeOut : UInt64 read FTimeOut write SetTimeOut;
   end;
 
   TUVIdle = class;
-  TUVIdleEvent = procedure(T:TUVIdle) of object;
   TUV_Idle = record
     I : uv_idle_t;
     reserved : array[0..15] of byte;
     FCB: TUVNotify;
-    FEV,FEV2: TUVIdleEvent;
   end;
   PUV_Idle = ^TUV_Idle;
   TUVIdle = class(TUVHandle<TUV_Idle>)
-  private
-    procedure SetOnIdle(const Value: TUVIdleEvent);
-    function GetOnIdle: TUVIdleEvent;
-    procedure SetRunning(const Value: Boolean);
   protected
-    FRunning : boolean;
     procedure Init; override;
     class function Data(const h: uv_idle_t): TUVIdle; static; inline;
     class procedure CB(var handle: uv_idle_t); cdecl; static;
   public
     function Start(F: TUVNotify): integer; overload;
-    function Start(F: TUVIdleEvent = nil): integer; overload;
     function Stop: integer;
-    property OnIdle : TUVIdleEvent read GetOnIdle write SetOnIdle;
-    property Running : Boolean read FRunning write SetRunning;
   end;
 
   TUVPrepare = class;
-  TUVPrepareEvent = procedure(T:TUVPrepare) of object;
   TUV_Prepare = record
     P : uv_prepare_t;
     reserved : array[0..15] of byte;
     FCB: TUVNotify;
-    FEV,FEV2: TUVPrepareEvent;
   end;
   PUV_Prepare = ^TUV_Prepare;
   TUVPrepare = class(TUVHandle<TUV_Prepare>)
-  private
-    procedure SetOnPrepare(const Value: TUVPrepareEvent);
-    function GetOnPrepare: TUVPrepareEvent;
-    procedure SetRunning(const Value: Boolean);
   protected
-    FRunning : boolean;
     procedure Init; override;
     class procedure CB(var handle: uv_prepare_t); cdecl; static;
     class function Data(const h: uv_prepare_t): TUVPrepare; static; inline;
   public
     function Start(F: TUVNotify): integer; overload;
-    function Start(F: TUVPrepareEvent=nil): integer; overload;
     function Stop: integer;
-    property OnPrepair : TUVPrepareEvent read GetOnPrepare write SetOnPrepare;
-    property Running : Boolean read FRunning write SetRunning;
   end;
 
   TUVCheck = class;
-  TUVCheckEvent = procedure(T:TUVCheck) of object;
   TUV_Check = record
     C : uv_check_t;
     reserved : array[0..15] of byte;
     FCB: TUVNotify;
-    FEV,FEV2: TUVCheckEvent;
   end;
   PUV_Check = ^TUV_Check;
   TUVCheck = class(TUVHandle<TUV_Check>)
-  private
-    procedure SetOnCheck(const Value: TUVCheckEvent);
-    function GetOnCheck: TUVCheckEvent;
-    procedure SetRunning(const Value: Boolean);
   protected
-    FRunning : boolean;
     procedure Init; override;
     class procedure CB(var handle: uv_check_t); cdecl; static;
     class function Data(const h: uv_check_t): TUVCheck; static; inline;
   public
     function Start(F: TUVNotify): integer; overload;
-    function Start(F: TUVCheckEvent=nil): integer; overload;
     function Stop: integer;
-    property OnCheck : TUVCheckEvent read GetOnCheck write SetOnCheck;
-    property Running : Boolean read FRunning write SetRunning;
   end;
 
   TUVSock = uv_os_sock_t;
   TUVPoll = class;
-  TUVPollEvent = procedure(P:TUVPoll; status, events : integer) of object;
   TUV_Poll = record
     P : uv_poll_t;
     reserved : array[0..15] of byte;
     FCB: TUV2IntNotify;
-    FEV,FEV2: TUVPollEvent;
   end;
   PUV_Poll = ^TUV_Poll;
   TUVPoll = class(TUVHandle<TUV_Poll>)
   private
     FEvents: integer;
-    function GetOnPoll: TUVPollEvent;
-    procedure SetOnPoll(const Value: TUVPollEvent);
     procedure SetEvents(const Value: integer);
   protected
     ffd : integer;
     fsock : TUVSock;
-    FRunning : boolean;
     class procedure CB(var handle: uv_poll_t; status, events: integer); cdecl;
       static;
     class function Data(const h: uv_poll_t): TUVPoll; static; inline;
@@ -298,53 +256,41 @@ type
     constructor Createfd(fd: integer; L: TUVLoop = nil); overload;
     constructor CreateSock(sock: TUVSock; L: TUVLoop = nil); overload;
     function Start(F: TUV2IntNotify): integer; overload;
-    function Start(F: TUVPollEvent=nil): integer; overload;
     function Stop: integer;
-    property OnPoll : TUVPollEvent read GetOnPoll write SetOnPoll;
     property Events : integer read FEvents write SetEvents;
   end;
 
   TUVSignal = class;
-  TUVSignalEvent = procedure(P:TUVSignal; signum : integer) of object;
   TUV_Signal = record
     S : uv_signal_t;
     reserved : array[0..15] of byte;
     FCB: TUVIntNotify;
-    FEV,FEV2: TUVSignalEvent;
   end;
   PUV_Signal = ^TUV_Signal;
   TUVSignal = class(TUVHandle<TUV_Signal>)
   private
     FSigNum: integer;
     procedure SetSigNum(const Value: integer);
-    procedure SetOnSignal(const Value: TUVSignalEvent);
-    function GetOnSignal: TUVSignalEvent;
   protected
-    FRunning : boolean;
     class procedure CB(var handle: uv_signal_t; signum: integer); cdecl; static;
     class function Data(const h: uv_signal_t): TUVSignal; static; inline;
     procedure Init; override;
   public
     function Start(F: TUVIntNotify): integer; overload;
-    function Start(F: TUVSignalEvent=nil): integer; overload;
     function StartOneShot(F: TUVIntNotify): integer; overload;
-    function StartOneShot(F: TUVSignalEvent): integer; overload;
     function Stop: integer;
     property SigNum : integer read FSigNum write SetSigNum;
-    property OnSignal : TUVSignalEvent read GetOnSignal write SetOnSignal;
   end;
 
   TUVProcessOptions = uv_process_options_t;
   PUVProcessOptions = ^TUVProcessOptions;
   TUVProcessFlags = uv_process_flags;
   TUVProcess = class;
-  TUVProcessEvent = procedure(P:TUVProcess; es : Int64; ts : integer) of object;
   TUVProcessNotify = reference to procedure(es: Int64; ts: integer);
   TUVProcessData=record
     Process : uv_process_t;
     Options : uv_process_options_t;
     FCB : TUVProcessNotify;
-    FEV : TUVProcessEvent;
   end;
   PUVProcessData = ^TUVProcessData;
   TUVProcess = class(TUVHandle<TUVProcessData>)
@@ -359,24 +305,49 @@ type
   public
     constructor Create(const O: TUVProcessOptions; F: TUVProcessNotify = nil;
       L: TUVLoop = nil); overload;
-    constructor Create(const O: TUVProcessOptions; F: TUVProcessEvent;
-      L: TUVLoop = nil); overload;
     function kill(signum: integer): integer; overload;
     class function kill(pid, signum: integer): integer; overload; static;
     property pid: integer read getpid;
   end;
 
+  TUVADDR = record
+  private
+    function GetAddressV4: String;
+    function GetAddressV6: String;
+    procedure SetAddressV4(const Value: String);
+    procedure SetAddressV6(const Value: String);
+  public
+    property AddressV4 : String read GetAddressV4 write SetAddressV4;
+    property AddressV6 : String read GetAddressV6 write SetAddressV6;
+    procedure SetV4(const A : String; const P : Word); inline;
+    procedure SetV6(const A : String; const P : Word); inline;
+    class function From(S : String;P:Word):TUVADDR; inline; static;
+    case integer of
+      0:
+        (SaFamily,Port: Word);
+      1:
+        (v4: sockaddr_in);
+      2:
+        (v6: sockaddr_in6);
+      3:
+        (storage: sockaddr_storage);
+  end;
+  PUVADDR = ^TUVADDR;
+
   TUVStream = class;
   TUVStreamClass = class of TUVStream;
   TUVReadNotify = reference to procedure(Buf: REFPTR; Len: NativeUInt);
-  TUVReadEvent = procedure(S:TUVStream; Buf: REFPTR; Len: NativeUInt) of object;
+  TUVUDPRecvNotify = reference to procedure(Buf: REFPTR; Len: NativeUInt;
+    Addr : TUVAddr; flags: Cardinal);
   TUVStreamIntNotify = reference to procedure(S: TUVStream; i: integer);
-  TUVStreamIntEvent = procedure(S:TUVStream; i: integer);
+  TUVStrIntIntNotify = reference to procedure(Str : String; i,j: integer);
+  TUVPollNotify = reference to procedure(statu:integer; prev,curr : uv_stat_t);
   TUV_Stream = record
     FLCB: TUVIntNotify;
-    FLEV,FLEV2,FWEV,FSEV: TUVStreamIntEvent;
     FRCB: TUVReadNotify;
-    FREV,FREV2: TUVReadEvent;
+    FURCB : TUVUDPRecvNotify;
+    FFSCB : TUVStrIntIntNotify;
+    FPCB : TUVPollNotify;
     FEOF : boolean;
   end;
   PUV_Stream = ^TUV_Stream;
@@ -384,14 +355,6 @@ type
   private
     function GetWriteQueueSize: NativeUInt;
     function GetEof: boolean;
-    function GetOnConnection: TUVStreamIntEvent;
-    procedure SetOnConnection(const Value: TUVStreamIntEvent);
-    function GetOnRead: TUVReadEvent;
-    procedure SetOnRead(const Value: TUVReadEvent);
-    function GetOnWriten: TUVStreamIntEvent;
-    procedure SetOnWriten(const Value: TUVStreamIntEvent);
-    function GetOnShutDown: TUVStreamIntEvent;
-    procedure SetOnShutDown(const Value: TUVStreamIntEvent);
   protected
     class function StreamData(var h):PUV_Stream; virtual; abstract;
     class procedure LCB(var server: uv_stream_t; status: integer); cdecl;
@@ -404,12 +367,9 @@ type
     function uvstream: Puv_stream_t; inline;
   public
     function listen(backlog: integer; F: TUVIntNotify): integer; overload;
-    function listen(backlog: integer; F: TUVStreamIntEvent): integer; overload;
     function Read(F: TUVReadNotify): integer; overload;
-    function Read(F: TUVReadEvent=nil): integer; overload;
     function ReadStop: integer;
     function ShutDown(F: TUVIntNotify): integer; overload;
-    function ShutDown(F: TUVStreamIntEvent=nil): integer; overload;
     function Write(Buf: REFPTR; size: NativeInt; F: TUVIntNotify):
       integer; overload;
     function Write(Buf: Pointer; size: NativeInt; F: TUVIntNotify):
@@ -418,14 +378,6 @@ type
       TUVIntNotify): integer; overload;
     function Write2(Buf: Pointer; size: NativeInt; S: TUVStream; F:
       TUVIntNotify): integer; overload;
-    function Write(Buf: REFPTR; size: NativeInt; F: TUVStreamIntEvent=nil):
-      integer; overload;
-    function Write(Buf: Pointer; size: NativeInt; F: TUVStreamIntEvent=nil):
-      integer; overload;
-    function Write2(Buf: REFPTR; size: NativeInt; S: TUVStream; F:
-      TUVStreamIntEvent=nil): integer; overload;
-    function Write2(Buf: Pointer; size: NativeInt; S: TUVStream; F:
-      TUVStreamIntEvent=nil): integer; overload;
     function TryWrite(Buf: Pointer; size: integer): integer;
     function TryWrite2(Buf: Pointer; size: integer; S: TUVStream): integer;
     function IsReadable: boolean;
@@ -433,12 +385,6 @@ type
     function SetBlocking(b: integer): integer;
     property WriteQueueSize: NativeUInt read GetWriteQueueSize;
     property EOF:boolean read GetEof;
-    property OnConnection : TUVStreamIntEvent read GetOnConnection
-      write SetOnConnection;
-    property OnRead : TUVReadEvent read GetOnRead write SetOnRead;
-    property OnWriten : TUVStreamIntEvent read GetOnWriten write SetOnWriten;
-    property OnShutDown : TUVStreamIntEvent read GetOnShutDown
-      write SetOnShutDown;
   end;
 
   TUVStream<T: Record > = class abstract(TUVStream)
@@ -465,29 +411,6 @@ type
     class function StreamData(var h):PUV_Stream; override;
   end;
 
-  TUVADDR = record
-  private
-    function GetAddressV4: String;
-    function GetAddressV6: String;
-    procedure SetAddressV4(const Value: String);
-    procedure SetAddressV6(const Value: String);
-  public
-    property AddressV4 : String read GetAddressV4 write SetAddressV4;
-    property AddressV6 : String read GetAddressV6 write SetAddressV6;
-    procedure SetV4(const A : String; const P : Word); inline;
-    procedure SetV6(const A : String; const P : Word); inline;
-    class function From(S : String;P:Word):TUVADDR; inline; static;
-    case integer of
-      0:
-        (SaFamily,Port: Word);
-      1:
-        (v4: sockaddr_in);
-      2:
-        (v6: sockaddr_in6);
-      3:
-        (storage: sockaddr_storage);
-  end;
-
   TUVTCP = class(TUVStream<uv_tcp_t>)
   protected
     fflags: Cardinal;
@@ -501,8 +424,6 @@ type
     function KeepAlive(Enable, delay: integer): integer;
     function Bind(const Bound : TUVADDR; flags : Cardinal):integer;
     function Connect(const Peer : TUVADDR; F : TUVIntNotify=nil) : integer;
-      overload;
-    function Connect(const Peer : TUVADDR; F : TUVStreamIntEvent) : integer;
       overload;
     function GetSockName(var A : TUVAddr):integer;
     function GetPeerName(var A : TUVAddr):integer;
@@ -520,7 +441,6 @@ type
     constructor Creaet(ipc : boolean; L : TUVLoop = nil); overload;
     function Open(f : TUVFile):integer;
     procedure Connect(Name : String; F : TUVIntNotify); overload;
-    procedure Connect(Name : String; F : TUVStreamIntEvent); overload;
     function Bind(S : String):integer;
     function SockName : AnsiString;
     function PeerName : AnsiString;
@@ -552,8 +472,18 @@ type
   end;
 
   TUVUDP=class;
-  TUVUDPSendEvent = procedure(U : TUVUDP; st : integer) of object;
+  TUV_UDPSEND=record
+    S : uv_udp_send_t;
+    ADDR : TUVAddr;
+    buffer : uv_buf_t;
+    buf : REFPTR;
+    FCB : TUVIntNotify;
+  end;
+  PUV_UDPSEND = ^TUV_UDPSEND;
   TUVUDP = class(TUVStream<uv_udp_t>)
+  private
+    function GetSendQueueSize: NativeUInt;
+    function GetSendQueueCount: NativeUInt;
   protected
   type
     TUV_UDPCONNECT = record
@@ -561,11 +491,15 @@ type
       buf : RefPTR;
       Buffer : uv_buf_t;
       FCB : TUVIntNotify;
-//      FEV : T
     end;
+  class var
+    SendPool : TPool<TUV_UDPSEND,__T2>;
   var
     fflag : integer;
     procedure Init; override;
+    class procedure SCB(var H:uv_udp_send_t; status : integer); cdecl; static;
+    class procedure URCB(var handle: uv_udp_t; nread: ssize_t;
+      const buf: Puv_buf_t; const addr: PSOCKADDR; flags: Cardinal); cdecl; static;
   public
     constructor Create(flags : integer; L : TUVLoop=nil); overload;
     function Open(sock : TUVSock):integer;
@@ -582,10 +516,40 @@ type
     function SetMultiCastInterface(I : AnsiString):integer;
     function SetBoardCastOn(O:Boolean):integer;
     function SetTTL(T : integer):integer;
-//    function Send(const Buf : RefPtr; Size : Cardinal; const Addr : TUVAddr):
-//      integer; overload;
-//    function Send(const Buf : Pointer; Size : Cardinal; const Addr : TUVAddr):
-//      integer; overload;
+    function Send(const Buf : RefPtr; Size : Cardinal; const Addr : TUVAddr;
+      F : TUVIntNotify) : integer; overload;
+    function Send(const Buf : Pointer; Size : Cardinal; const Addr : TUVAddr;
+      F : TUVIntNotify) : integer; overload;
+    function TrySend(const Buf : Pointer; Size : Cardinal; const Addr :
+      TUVAddr) : integer; overload;
+    function RecvStart(F : TUVUDPRecvNotify):integer;
+    function RecvStop:integer;
+    function UsingRecvMMsg:boolean;
+    property SendQueueSize : NativeUInt read GetSendQueueSize;
+    property SendQueueCount : NativeUInt read GetSendQueueCount;
+  end;
+
+  TUVFSEvent = class(TUVStream<uv_fs_event_t>)
+  protected
+    class procedure FSCB(var h : uv_fs_event_t; const filename : PAnsiChar;
+      events, status : integer); cdecl; static;
+    procedure Init; override;
+  public
+    function Start(Path : String; flags:Cardinal; F:TUVStrIntIntNotify):integer;
+    function Stop:integer;
+    function Path : String;
+  end;
+
+  TUVFSPoll = class(TUVStream<uv_fs_poll_t>)
+  protected
+    class procedure PCB(var h : uv_fs_poll_t;status : integer; const prev,curr
+      : uv_stat_t); cdecl; static;
+    procedure Init; override;
+  public
+    function Start(Path:AnsiString; interval:Cardinal; F : TUVPollNotify)
+      : integer;
+    function Stop:integer;
+    function Path : String;
   end;
 
   function DefaultLoop: TUVLoop; inline;
@@ -600,7 +564,6 @@ type
   TUVShutDown = record
     S: uv_shutdown_t;
     FCB: TUVIntNotify;
-    FEV: TUVStreamIntEvent;
     class procedure CB(var R: uv_shutdown_t; st: integer); static; cdecl;
   end;
 
@@ -609,7 +572,6 @@ type
   TUVWrite = record
     S: uv_write_t;
     FCB: TUVIntNotify;
-    FEV: TUVStreamIntEvent;
     Buf: uv_buf_t;
     buffer: REFPTR;
     class procedure CB(var R: uv_write_t; st: integer); static; cdecl;
@@ -618,7 +580,6 @@ type
   TUVConnect = record
     S: uv_connect_t;
     FCB: TUVIntNotify;
-    FEV: TUVStreamIntEvent;
     class procedure CB(var R: uv_connect_t; st: integer); cdecl; static;
   end;
 
@@ -684,8 +645,14 @@ begin
 end;
 
 class destructor TUVLoop.ClassDone;
+var E : TEvent;
 begin
   uv_loop_close(uv_default_loop^);
+  E := EventPool.Get;
+  while assigned(E) do begin
+    E.Free;
+    E := EventPool.Get;
+  end;
 end;
 
 function TUVLoop.Config(O: TUVLoopOption): integer;
@@ -1037,18 +1004,11 @@ var I : PUV_Idle;
 begin
   I := PUV_Idle(@handle);
   if assigned(I.FCB) then I.FCB()
-  else if assigned(I.FEV2) then I.FEV2(Data(handle))
-  else if assigned(I.FEV) then I.FEV(Data(handle));
 end;
 
 class function TUVIdle.Data(const h: uv_idle_t): TUVIdle;
 begin
   Result := TUVIdle(uv_handle_get_data(Puv_handle_t(@h)^));
-end;
-
-function TUVIdle.GetOnIdle: TUVIdleEvent;
-begin
-  Result := uv.handle.FEV;
 end;
 
 procedure TUVIdle.Init;
@@ -1059,43 +1019,11 @@ end;
 
 function TUVIdle.Start(F: TUVNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_idle_start(UV.handle.I, CB);
     end);
-    frunning := (Result = 0) or frunning;
-  end else Result := 0;
-end;
-
-procedure TUVIdle.SetOnIdle(const Value: TUVIdleEvent);
-begin
-  if TMethod(uv.handle.FEV)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if frunning then begin
-      stop;
-      Start;
-    end;
-  end;
-end;
-
-procedure TUVIdle.SetRunning(const Value: Boolean);
-begin
-  if FRunning <> Value then
-    if Value then Start else Stop;
-end;
-
-function TUVIdle.Start(F: TUVIdleEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_idle_start(UV.handle.I, CB);
-    end);
-    frunning := (Result = 0) or frunning;
   end else Result := 0;
 end;
 
@@ -1104,7 +1032,6 @@ begin
   Result:=UVGet(function:integer begin
     Result := uv_idle_stop(UV.handle.I);
   end);
-  frunning := (Result <> 0) and frunning;
 end;
 
 { TUVTimer }
@@ -1119,8 +1046,6 @@ var T : PUV_Timer;
 begin
   T := PUV_Timer(@handle);
   if assigned(T.FCB) then T.FCB()
-  else if assigned(T.FEV2) then T.FEV2(Data(handle))
-  else if assigned(T.FEV) then T.FEV(Data(handle));
 end;
 
 class function TUVTimer.Data(const h: uv_timer_t): TUVTimer;
@@ -1138,11 +1063,6 @@ begin
   Result := uv_timer_get_repeat(UV.handle.T);
 end;
 
-function TUVTimer.GetOnTimer: TUVTimerEvent;
-begin
-  Result := uv.handle.FEV;
-end;
-
 procedure TUVTimer.Init;
 begin
   inherited;
@@ -1156,20 +1076,6 @@ begin
   uv_timer_set_repeat(UV.handle.T, Value);
 end;
 
-procedure TUVTimer.SetOnTimer(const Value: TUVTimerEvent);
-var a,b : UInt64;
-begin
-  if TMethod(uv.handle.Fev)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if frunning then begin
-      a := DueIn; b := InterVal;
-      Stop;
-      uv_timer_start(uv.handle.T,CB,a,b);
-    end;
-  end;
-end;
-
 procedure TUVTimer.SetTimeOut(const Value: UInt64);
 begin
   FTimeOut := Value;
@@ -1177,22 +1083,8 @@ end;
 
 function TUVTimer.Start(F: TUVNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
-    Result:=UVGet(function:integer begin
-      Result := uv_timer_start(UV.handle.T, CB, timeout, interval);
-    end);
-    frunning := (Result = 0)or frunning;
-  end;
-  Result := 0;
-end;
-
-function TUVTimer.Start(F: TUVTimerEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
     Result:=UVGet(function:integer begin
       Result := uv_timer_start(UV.handle.T, CB, timeout, interval);
     end);
@@ -1216,18 +1108,11 @@ var P : PUV_Prepare;
 begin
   P := PUV_Prepare(@handle);
   if assigned(P.FCB) then P.FCB()
-  else if assigned(P.FEV2) then P.FEV2(Data(handle))
-  else if assigned(P.FEV) then P.FEV(Data(handle));
 end;
 
 class function TUVPrepare.Data(const h: uv_prepare_t): TUVPrepare;
 begin
   Result := TUVPrepare(uv_handle_get_data(Puv_handle_t(@h)^));
-end;
-
-function TUVPrepare.GetOnPrepare: TUVPrepareEvent;
-begin
-  Result := uv.handle.FEV;
 end;
 
 procedure TUVPrepare.Init;
@@ -1238,43 +1123,11 @@ end;
 
 function TUVPrepare.Start(F: TUVNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_prepare_start(UV.handle.P, CB);
     end);
-    frunning := (Result = 0)or frunning;
-  end else Result := 0;
-end;
-
-procedure TUVPrepare.SetOnPrepare(const Value: TUVPrepareEvent);
-begin
-  if TMethod(uv.handle.FEV)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if FRunning then begin
-      Stop;
-      Start;
-    end;
-  end;
-end;
-
-procedure TUVPrepare.SetRunning(const Value: Boolean);
-begin
-  if FRunning <> Value then
-    if Value then Start else Stop;
-end;
-
-function TUVPrepare.Start(F: TUVPrepareEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_prepare_start(UV.handle.P, CB);
-    end);
-    frunning := (Result = 0)or frunning;
   end else Result := 0;
 end;
 
@@ -1283,7 +1136,6 @@ begin
   Result:=UVGet(function:integer begin
     Result := uv_prepare_stop(UV.handle.P);
   end);
-  frunning := (Result <> 0)and frunning;
 end;
 
 { TUVCheck }
@@ -1293,18 +1145,11 @@ var C : PUV_Check;
 begin
   C := PUV_Check(@handle);
   if assigned(C.FCB) then C.FCB()
-  else if assigned(C.FEV2) then C.FEV2(Data(C.C))
-  else if assigned(C.FEV) then C.FEV(Data(C.C));
 end;
 
 class function TUVCheck.Data(const h: uv_check_t): TUVCheck;
 begin
   Result := TUVCheck(uv_handle_get_data(Puv_handle_t(@h)^));
-end;
-
-function TUVCheck.GetOnCheck: TUVCheckEvent;
-begin
-  Result := uv.handle.FEV;
 end;
 
 procedure TUVCheck.Init;
@@ -1315,45 +1160,11 @@ end;
 
 function TUVCheck.Start(F: TUVNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_check_start(UV.handle.C, CB);
     end);
-    frunning := (Result = 0)or frunning;
-  end else Result := 0;
-end;
-
-procedure TUVCheck.SetOnCheck(const Value: TUVCheckEvent);
-begin
-  if TMethod(uv.handle.FEV)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if FRunning then begin
-      Stop;
-      Start;
-    end;
-  end;
-end;
-
-procedure TUVCheck.SetRunning(const Value: Boolean);
-begin
-  if Value<>FRunning then begin
-    if Value then Start
-    else Stop;
-  end;
-end;
-
-function TUVCheck.Start(F: TUVCheckEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_check_start(UV.handle.C, CB);
-    end);
-    frunning := (Result = 0)or frunning;
   end else Result := 0;
 end;
 
@@ -1362,7 +1173,6 @@ begin
   Result:=UVGet(function:integer begin
     Result := uv_check_stop(UV.handle.C);
   end);
-  frunning := (Result <> 0)and frunning;
 end;
 
 { TUVPoll }
@@ -1372,8 +1182,6 @@ var P : PUV_Poll;
 begin
   P := PUV_Poll(@handle);
   if assigned(P.FCB) then P.FCB(status,events)
-  else if assigned(P.FEV2) then P.FEV2(Data(handle),status,events)
-  else if assigned(P.FEV) then P.FEV(Data(handle),status,events);
 end;
 
 constructor TUVPoll.Createfd(fd: integer; L: TUVLoop);
@@ -1395,11 +1203,6 @@ begin
   Result := TUVPoll(uv_handle_get_data(Puv_handle_t(@h)^));
 end;
 
-function TUVPoll.GetOnPoll: TUVPollEvent;
-begin
-  Result := uv.handle.FEV;
-end;
-
 procedure TUVPoll.init;
 begin
   inherited;
@@ -1409,13 +1212,11 @@ end;
 
 function TUVPoll.Start(F: TUV2IntNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_poll_start(UV.handle.P, events, CB);
     end);
-    frunning := (Result = 0)or frunning;
   end else Result := 0;
 end;
 
@@ -1424,36 +1225,11 @@ begin
   FEvents := Value;
 end;
 
-procedure TUVPoll.SetOnPoll(const Value: TUVPollEvent);
-begin
-  if TMethod(uv.handle.FEV)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if FRunning then begin
-      Stop;
-      Start;
-    end;
-  end;
-end;
-
-function TUVPoll.Start(F: TUVPollEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_poll_start(UV.handle.P, events, CB);
-    end);
-    frunning := (Result = 0)or frunning;
-  end else Result := 0;
-end;
-
 function TUVPoll.Stop: integer;
 begin
   Result:=UVGet(function:integer begin
     Result := uv_poll_stop(UV.handle.P);
   end);
-  frunning := (Result <> 0)and frunning;
 end;
 
 { TUVSignal }
@@ -1463,18 +1239,11 @@ var S : PUV_Signal;
 begin
   S := PUV_Signal(@handle);
   if assigned(S.FCB) then S.FCB(signum)
-  else if assigned(S.FEV2) then S.FEV2(Data(handle),signum)
-  else if assigned(S.FEV) then S.FEV(Data(handle),signum);
 end;
 
 class function TUVSignal.Data(const h: uv_signal_t): TUVSignal;
 begin
   Result := TUVSignal(uv_handle_get_data(Puv_handle_t(@h)^));
-end;
-
-function TUVSignal.GetOnSignal: TUVSignalEvent;
-begin
-  Result := uv.handle.FEV;
 end;
 
 procedure TUVSignal.Init;
@@ -1485,21 +1254,18 @@ end;
 
 function TUVSignal.Start(F: TUVIntNotify): integer;
 begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
+  if assigned(F) then begin
     uv.handle.FCB := F;
-    uv.handle.FEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_signal_start(UV.handle.S, CB, signum);
     end);
-    frunning := (Result = 0)or frunning;
   end else Result := 0;
 end;
 
 function TUVSignal.StartOneShot(F: TUVIntNotify): integer;
 begin
   uv.handle.FCB := F;
-  uv.handle.FEV2 := nil;
-  if assigned(F)or assigned(uv.handle.FEV) then
+  if assigned(F) then
     Result:=UVGet(function:integer begin
       Result := uv_signal_start_oneshot(UV.handle.S, CB, signum);
     end);
@@ -1510,46 +1276,11 @@ begin
   Result:=UVGet(function:integer begin
     Result := uv_signal_stop(UV.handle.S);
   end);
-  frunning := (Result <> 0)and frunning;
-end;
-
-procedure TUVSignal.SetOnSignal(const Value: TUVSignalEvent);
-begin
-  if TMethod(uv.handle.FEV)<>TMethod(Value) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV := Value;
-    if FRunning then begin
-      Stop;
-      Start;
-    end;
-  end;
 end;
 
 procedure TUVSignal.SetSigNum(const Value: integer);
 begin
   FSigNum := Value;
-end;
-
-function TUVSignal.Start(F: TUVSignalEvent): integer;
-begin
-  if assigned(F) or assigned(uv.handle.FEV) then begin
-    uv.handle.FCB := nil;
-    uv.handle.FEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_signal_start(UV.handle.S, CB, signum);
-    end);
-    frunning := (Result = 0)or frunning;
-  end else Result := 0;
-end;
-
-function TUVSignal.StartOneShot(F: TUVSignalEvent): integer;
-begin
-  uv.handle.FCB := nil;
-  uv.handle.FEV2 := F;
-  if assigned(F)or assigned(uv.handle.FEV) then
-    Result:=UVGet(function:integer begin
-      Result := uv_signal_start_oneshot(UV.handle.S, CB, signum);
-    end);
 end;
 
 { TUVProcess }
@@ -1559,7 +1290,6 @@ var P : PUVProcessData;
 begin
   P := PUVProcessData(@handle);
   if assigned(P.FCB) then P.FCB(es, ts)
-  else if assigned(P.FEV) then P.FEV(Data(handle),es,ts);
 end;
 
 constructor TUVProcess.Create(const O: TUVProcessOptions; F: TUVProcessNotify;
@@ -1568,16 +1298,6 @@ begin
   PO := @O;
   inherited Create(L);
   uv.handle.FCB := F;
-  uv.handle.FEV := nil;
-end;
-
-constructor TUVProcess.Create(const O: TUVProcessOptions; F: TUVProcessEvent;
-  L: TUVLoop);
-begin
-  PO := @O;
-  inherited Create(L);
-  uv.handle.FCB := nil;
-  uv.handle.FEV := F;
 end;
 
 class function TUVProcess.Data(const h: uv_process_t): TUVProcess;
@@ -1625,8 +1345,6 @@ var
 begin
   S := StreamData(server);
   if assigned(S.FLCB) then S.FLCB(status)
-  else if assigned(S.FLEV2) then S.FLEV2(Data(Puv_Stream_t(@server)^),status)
-  else if assigned(S.FLEV) then S.FLEV(Data(Puv_Stream_t(@server)^),status);
 end;
 
 class function TUVStream.Data(const h: uv_stream_t): TUVStream;
@@ -1637,26 +1355,6 @@ end;
 function TUVStream.GetEof: boolean;
 begin
   Result := StreamData(uvstream^).FEOF;
-end;
-
-function TUVStream.GetOnConnection: TUVStreamIntEvent;
-begin
-  Result := StreamData(uvstream^).FLEV;
-end;
-
-function TUVStream.GetOnRead: TUVReadEvent;
-begin
-  Result := StreamData(uvstream^).FREV;
-end;
-
-function TUVStream.GetOnShutDown: TUVStreamIntEvent;
-begin
-  Result := StreamData(uvstream^).FSEV;
-end;
-
-function TUVStream.GetOnWriten: TUVStreamIntEvent;
-begin
-  Result := StreamData(uvstream^).FWEV;
 end;
 
 function TUVStream.GetWriteQueueSize: NativeUInt;
@@ -1674,22 +1372,10 @@ begin
   Result := uv_is_writable(uvstream^) <> 0;
 end;
 
-function TUVStream.listen(backlog: integer; F: TUVStreamIntEvent): integer;
-begin
-  if assigned(F) or assigned(StreamData(uvstream^).FLEV) then begin
-    StreamData(uvstream^).FLCB := nil;
-    StreamData(uvstream^).FLEV2 := F;
-    Result:=UVGet(function:integer begin
-      Result := uv_listen(uvstream^, backlog, LCB)
-    end);
-  end else Result := 0;
-end;
-
 function TUVStream.listen(backlog: integer; F: TUVIntNotify): integer;
 begin
-  if assigned(F) or assigned(StreamData(uvstream^).FLEV) then begin
+  if assigned(F) then begin
     StreamData(uvstream^).FLCB := F;
-    StreamData(uvstream^).FLEV2 := nil;
     Result:=UVGet(function:integer begin
       Result := uv_listen(uvstream^, backlog, LCB)
     end);
@@ -1711,26 +1397,12 @@ begin
     uv_read_stop(h);
   end;
   if assigned(T.FRCB) then T.FRCB(R, S)
-  else if assigned(T.FREV2) then T.FREV2(Data(Puv_stream_t(@h)^),R,S)
-  else if assigned(T.FREV) then T.FREV(Data(Puv_stream_t(@h)^),R,S);
 end;
 
 function TUVStream.Read(F: TUVReadNotify): integer;
 begin
-  if assigned(F) or assigned(StreamData(uvstream^).FREV) then begin
+  if assigned(F) then begin
     StreamData(uvstream^).FRCB := F;
-    StreamData(uvstream^).FREV2 := nil;
-    Result:=UVGet(function:integer begin
-      Result := uv_read_start(uvstream^, ACB, RCB);
-    end);
-  end else Result := 0;
-end;
-
-function TUVStream.Read(F: TUVReadEvent): integer;
-begin
-  if assigned(F) or assigned(StreamData(uvstream^).FREV) then begin
-    StreamData(uvstream^).FRCB := nil;
-    StreamData(uvstream^).FREV2 := F;
     Result:=UVGet(function:integer begin
       Result := uv_read_start(uvstream^, ACB, RCB);
     end);
@@ -1749,45 +1421,12 @@ begin
   Result := uv_stream_set_blocking(uvstream^, b);
 end;
 
-procedure TUVStream.SetOnConnection(const Value: TUVStreamIntEvent);
-begin
-  StreamData(uvstream^).FLEV := Value;
-end;
-
-procedure TUVStream.SetOnRead(const Value: TUVReadEvent);
-begin
-  StreamData(uvstream^).FREV := Value;
-end;
-
-procedure TUVStream.SetOnShutDown(const Value: TUVStreamIntEvent);
-begin
-  StreamData(uvstream^).FSEV := Value;
-end;
-
-procedure TUVStream.SetOnWriten(const Value: TUVStreamIntEvent);
-begin
-  StreamData(uvstream^).FWEV := Value;
-end;
-
-function TUVStream.ShutDown(F: TUVStreamIntEvent): integer;
-var
-  P: PUVShutDown;
-begin
-  P := ShutDownPool.Get;
-  P.FCB := nil;
-  if assigned(F) then P.FEV:=F else P.FEV := StreamData(uvstream^).FSEV;
-  Result:=UVGet(function:integer begin
-    Result := uv_shutdown(P.S, uvstream, TUVShutDown.CB);
-  end);
-end;
-
 function TUVStream.ShutDown(F: TUVIntNotify): integer;
 var
   P: PUVShutDown;
 begin
   P := ShutDownPool.Get;
   P.FCB := F;
-  if assigned(F) then P.FEV:=nil else P.FEV := StreamData(uvstream^).FSEV;
   Result:=UVGet(function:integer begin
     Result := uv_shutdown(P.S, uvstream, TUVShutDown.CB);
   end);
@@ -1828,7 +1467,6 @@ var
 begin
   P := WritePool.Get;
   P.FCB := F;
-  if assigned(F) then P.FEV:=nil else P.FEV := StreamData(uvstream^).FWEV;
   P.buffer := Buf;
   P.Buf.Base := Buf;
   P.Buf.Len := size;
@@ -1844,7 +1482,6 @@ var
 begin
   P := WritePool.Get;
   P.FCB := F;
-  if assigned(F) then P.FEV:=nil else P.FEV := StreamData(uvstream^).FWEV;
   P.buffer := Buf;
   P.Buf.Base := Buf;
   P.Buf.Len := size;
@@ -1860,73 +1497,10 @@ var
 begin
   P := WritePool.Get;
   P.FCB := F;
-  if assigned(F) then P.FEV:=nil else P.FEV := StreamData(uvstream^).FWEV;
   P.Buf.Base := Buf;
   P.Buf.Len := size;
   Result:=UVGet(function:integer begin
     Result := uv_write(P.S, uvstream^, @P.Buf, 1, TUVWrite.CB);
-  end);
-end;
-
-function TUVStream.Write(Buf: REFPTR; size: NativeInt;
-  F: TUVStreamIntEvent): integer;
-var
-  P: PUVWrite;
-begin
-  P := WritePool.Get;
-  P.FCB := nil;
-  if assigned(F) then P.FEV:=F else P.FEV := StreamData(uvstream^).FWEV;
-  P.buffer := Buf;
-  P.Buf.Base := Buf;
-  P.Buf.Len := size;
-  Result:=UVGet(function:integer begin
-    Result := uv_write(P.S, uvstream^, @P.Buf, 1, TUVWrite.CB);
-  end);
-end;
-
-function TUVStream.Write(Buf: Pointer; size: NativeInt;
-  F: TUVStreamIntEvent): integer;
-var
-  P: PUVWrite;
-begin
-  P := WritePool.Get;
-  P.FCB := nil;
-  if assigned(F) then P.FEV:=F else P.FEV := StreamData(uvstream^).FWEV;
-  P.Buf.Base := Buf;
-  P.Buf.Len := size;
-  Result:=UVGet(function:integer begin
-    Result := uv_write(P.S, uvstream^, @P.Buf, 1, TUVWrite.CB);
-  end);
-end;
-
-function TUVStream.Write2(Buf: REFPTR; size: NativeInt; S: TUVStream;
-  F: TUVStreamIntEvent): integer;
-var
-  P: PUVWrite;
-begin
-  P := WritePool.Get;
-  P.FCB := nil;
-  if assigned(F) then P.FEV:=F else P.FEV := StreamData(uvstream^).FWEV;
-  P.buffer := Buf;
-  P.Buf.Base := Buf;
-  P.Buf.Len := size;
-  Result:=UVGet(function:integer begin
-    Result := uv_write2(P.S, uvstream^, @P.Buf, 1, S.uvstream^, TUVWrite.CB);
-  end);
-end;
-
-function TUVStream.Write2(Buf: Pointer; size: NativeInt; S: TUVStream;
-  F: TUVStreamIntEvent): integer;
-var
-  P: PUVWrite;
-begin
-  P := WritePool.Get;
-  P.FCB := nil;
-  if assigned(F) then P.FEV:=F else P.FEV := StreamData(uvstream^).FWEV;
-  P.Buf.Base := Buf;
-  P.Buf.Len := size;
-  Result:=UVGet(function:integer begin
-    Result := uv_write2(P.S, uvstream^, @P.Buf, 1, S.uvstream^, TUVWrite.CB);
   end);
 end;
 
@@ -1937,7 +1511,6 @@ var
 begin
   P := WritePool.Get;
   P.FCB := F;
-  if assigned(F) then P.FEV:=nil else P.FEV := StreamData(uvstream^).FWEV;
   P.Buf.Base := Buf;
   P.Buf.Len := size;
   Result:=UVGet(function:integer begin
@@ -1951,8 +1524,7 @@ class procedure TUVShutDown.CB(var R: uv_shutdown_t; st: integer);
 var S : TUVStream;
 begin
   try
-    with PUVShutDown(@R)^ do if assigned(FCB) then FCB(st)
-      else if assigned(FEV) then FEV(TUVStream.Data(R.handle^), st);
+    with PUVShutDown(@R)^ do if assigned(FCB) then FCB(st);
   finally
     ShutDownPool.Release(@R);
   end;
@@ -1964,8 +1536,7 @@ class procedure TUVWrite.CB(var R: uv_write_t; st: integer);
 begin
   try
     with PUVWrite(@R)^ do
-      if assigned(FCB) then FCB(st)
-      else if assigned(FEV) then FEV(TUVStream.Data(R.handle^),st);
+      if assigned(FCB) then FCB(st);
   finally
     PUVWrite(@R).buffer := nil;
     WritePool.Release(@R);
@@ -2019,23 +1590,11 @@ begin
   end);
 end;
 
-function TUVTCP.Connect(const Peer: TUVADDR; F: TUVStreamIntEvent): integer;
-var C : PUVConnect;
-begin
-  C := ConnectPool.Get;
-  C.FCB := nil;
-  C.FEV := F;
-  Result := UVGet(function : integer begin
-    Result := uv_tcp_connect(C.S,uv.D.handle,@Peer,C.CB);
-  end);
-end;
-
 function TUVTCP.Connect(const Peer : TUVADDR; F: TUVIntNotify): integer;
 var C : PUVConnect;
 begin
   C := ConnectPool.Get;
   C.FCB := F;
-  C.FEV := nil;
   Result := UVGet(function : integer begin
     Result := uv_tcp_connect(C.S,uv.D.handle,@Peer,C.CB);
   end);
@@ -2151,8 +1710,7 @@ end;
 class procedure TUVConnect.CB(var R: uv_connect_t; st: integer);
 begin
   try
-    with PUVConnect(@R)^ do if assigned(FCB) then FCB(st)
-      else if assigned(FEV) then FEV(TUVStream.Data(R.handle^),st);
+    with PUVConnect(@R)^ do if assigned(FCB) then FCB(st);
   finally
     ConnectPool.Release(@R);
   end;
@@ -2188,7 +1746,6 @@ var C : PUVConnect;
 begin
   C := ConnectPool.Get;
   C.FCB := F;
-  C.FEV := nil;
   UVRun(procedure begin
     uv_pipe_connect(C.S,uv.D.handle,PAnsiChar(AnsiString(Name)),C.CB);
   end);
@@ -2197,17 +1754,6 @@ end;
 function TUVPipe.Chmod(flags: integer): integer;
 begin
   Result := uv_pipe_chmod(uv.D.handle,flags);
-end;
-
-procedure TUVPipe.Connect(Name: String; F: TUVStreamIntEvent);
-var C : PUVConnect;
-begin
-  C := ConnectPool.Get;
-  C.FCB := nil;
-  C.FEV := F;
-  UVRun(procedure begin
-    uv_pipe_connect(C.S,uv.D.handle,PAnsiChar(AnsiString(Name)),C.CB);
-  end);
 end;
 
 constructor TUVPipe.Creaet(ipc: boolean; L: TUVLoop);
@@ -2347,6 +1893,16 @@ begin
   inherited Create(L);
 end;
 
+function TUVUDP.GetSendQueueCount: NativeUInt;
+begin
+  Result := uv.D.handle.send_queue_count;
+end;
+
+function TUVUDP.GetSendQueueSize: NativeUInt;
+begin
+  Result := uv.D.handle.send_queue_size;
+end;
+
 procedure TUVUDP.Init;
 begin
   inherited;
@@ -2366,6 +1922,64 @@ var l : integer;
 begin
   l := sizeof(Result);
   uv_udp_getpeername(uv.D.handle,@Result,l);
+end;
+
+function TUVUDP.RecvStart(F: TUVUDPRecvNotify): integer;
+begin
+  if assigned(F) then begin
+    uv.S.FURCB := F;
+    Result := UVGet(function :integer begin
+      Result := uv_udp_recv_start(uv.D.handle,ACB,URCB);
+    end);
+  end;
+end;
+
+function TUVUDP.RecvStop: integer;
+begin
+  Result := UVGet(function : integer begin
+    Result := uv_udp_recv_stop(uv.D.handle);
+  end);
+end;
+
+class procedure TUVUDP.SCB(var H: uv_udp_send_t; status: integer);
+var P:PUV_UDPSEND;
+begin
+  P := @H;
+  try
+    if assigned(P.FCB) then P.FCB(status);
+  finally
+    P.buf := nil;
+    SendPool.Release(P);
+  end;
+end;
+
+function TUVUDP.Send(const Buf: Pointer; Size: Cardinal;
+  const Addr: TUVAddr; F : TUVIntNotify) : integer;
+var S : PUV_UDPSEND;
+begin
+  S := SendPool.Get;
+  S.buffer.Base := Buf;
+  S.buffer.len := Size;
+  S.ADDR := Addr;
+  S.FCB := F;
+  Result := UVGet(function :integer begin
+    Result := uv_udp_send(S.S,uv.D.handle,@S.buffer,1,@Addr,SCB);
+  end);
+end;
+
+function TUVUDP.Send(const Buf: RefPtr; Size: Cardinal;
+  const Addr: TUVAddr; F : TUVIntNotify) : integer;
+var S : PUV_UDPSEND;
+begin
+  S := SendPool.Get;
+  S.buf := Buf;
+  S.buffer.Base := Buf;
+  S.buffer.len := Size;
+  S.ADDR := Addr;
+  S.FCB := F;
+  Result := UVGet(function :integer begin
+    Result := uv_udp_send(S.S,uv.D.handle,@S.buffer,1,@Addr,SCB);
+  end);
 end;
 
 function TUVUDP.SetBoardCastOn(O: Boolean): integer;
@@ -2421,6 +2035,32 @@ begin
   end);
 end;
 
+function TUVUDP.TrySend(const Buf: Pointer; Size: Cardinal; const Addr:
+  TUVAddr): integer;
+var b : uv_buf_t;
+begin
+  b.Base := @Buf;
+  b.len := Size;
+  Result := UVGet(function : integer begin
+    Result := uv_udp_try_send(uv.D.handle,@b,1,@Addr);
+  end);
+end;
+
+class procedure TUVUDP.URCB(var handle: uv_udp_t; nread: ssize_t;
+      const buf: Puv_buf_t; const addr: PSOCKADDR; flags: Cardinal);
+var P : PData;
+    B : REFPTR;
+begin
+  P := @handle;
+  if nread>0 then B := buf.Base;
+  if assigned(P.S.FURCB) then P.S.FURCB(B,nread,PUVAddr(addr)^,flags);
+end;
+
+function TUVUDP.UsingRecvMMsg: boolean;
+begin
+  Result := boolean(uv_udp_using_recvmmsg(uv.D.handle));
+end;
+
 { TUVThread }
 
 constructor TUVThread.Create(L: TUVLoop; Paused: Boolean);
@@ -2450,6 +2090,97 @@ end;
 procedure TUVThread.Run(F: TUVNotify);
 begin
   FLoop.UVRun(F);
+end;
+
+{ TUVFSEvent }
+
+class procedure TUVFSEvent.FSCB(var h: uv_fs_event_t; const filename: PAnsiChar;
+  events, status: integer);
+var F : PDATA;
+begin
+  F := @h;
+  if assigned(F.S.FFSCB) then F.S.FFSCB(filename,events,status);
+end;
+
+procedure TUVFSEvent.Init;
+begin
+  inherited;
+  uv_fs_event_init(loop.uvloop^,@uv.D.handle);
+end;
+
+function TUVFSEvent.Path: String;
+var P : AnsiString;
+    l : NativeUInt;
+begin
+  SetLength(P,1000);
+  l := 1000;
+  uv_fs_event_getpath(uv.D.handle,PAnsiChar(P),l);
+  SetLength(P,l);
+  Result := P;
+end;
+
+function TUVFSEvent.Start(Path : String; flags: Cardinal; F: TUVStrIntIntNotify): integer;
+var P : AnsiString;
+begin
+  if assigned(F) then begin
+    uv.S.FFSCB := F;
+    P := AnsiString(Path);
+    Result := UVGet(function : integer begin
+      Result := uv_fs_event_start(uv.D.handle,FSCB,PAnsiChar(P),flags);
+    end);
+  end else Result := 0;
+end;
+
+function TUVFSEvent.Stop: integer;
+begin
+  Result := UVGet(function : integer begin
+    Result := uv_fs_event_stop(uv.D.handle);
+  end);
+end;
+
+{ TUVFSPoll }
+
+procedure TUVFSPoll.Init;
+begin
+  inherited;
+  uv_fs_poll_init(loop.uvloop^,uv.D.handle);
+end;
+
+function TUVFSPoll.Path: String;
+var P : AnsiString;
+    l : NativeUInt;
+begin
+  SetLength(P,1000);
+  l := 1000;
+  uv_fs_poll_getpath(uv.D.handle,PAnsiChar(P),l);
+  SetLength(P,l);
+  Result := P;
+end;
+
+class procedure TUVFSPoll.PCB(var h: uv_fs_poll_t; status: integer; const prev,
+  curr: uv_stat_t);
+var P : PData;
+begin
+  P := @h;
+  if assigned(P.S.FPCB) then P.S.FPCB(status,prev,curr);
+end;
+
+function TUVFSPoll.Start(Path: AnsiString; interval: Cardinal;
+  F: TUVPollNotify): integer;
+begin
+  if assigned(F) then begin
+    uv.S.FPCB := F;
+    Result := UVGet(function : integer begin
+      Result := uv_fs_poll_start(uv.D.handle,PCB,PAnsiChar(Path),interval);
+    end);
+  end else Result := 0;
+end;
+
+function TUVFSPoll.Stop: integer;
+begin
+  Result := UVGet(function : integer begin
+    Result := uv_fs_poll_stop(uv.D.handle);
+  end);
 end;
 
 initialization
