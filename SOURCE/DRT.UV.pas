@@ -173,6 +173,7 @@ type
     procedure Init; override;
     class function Data(const h: uv_timer_t): TUVTimer; static; inline;
     class procedure CB(var handle: uv_timer_t); cdecl; static;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     function Start(F: TUVNotify): integer; overload;
     function Stop: integer;
@@ -194,6 +195,7 @@ type
     procedure Init; override;
     class function Data(const h: uv_idle_t): TUVIdle; static; inline;
     class procedure CB(var handle: uv_idle_t); cdecl; static;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     function Start(F: TUVNotify): integer; overload;
     function Stop: integer;
@@ -211,6 +213,7 @@ type
     procedure Init; override;
     class procedure CB(var handle: uv_prepare_t); cdecl; static;
     class function Data(const h: uv_prepare_t): TUVPrepare; static; inline;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     function Start(F: TUVNotify): integer; overload;
     function Stop: integer;
@@ -228,6 +231,7 @@ type
     procedure Init; override;
     class procedure CB(var handle: uv_check_t); cdecl; static;
     class function Data(const h: uv_check_t): TUVCheck; static; inline;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     function Start(F: TUVNotify): integer; overload;
     function Stop: integer;
@@ -252,6 +256,7 @@ type
       static;
     class function Data(const h: uv_poll_t): TUVPoll; static; inline;
     procedure init; override;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     constructor Createfd(fd: integer; L: TUVLoop = nil); overload;
     constructor CreateSock(sock: TUVSock; L: TUVLoop = nil); overload;
@@ -275,6 +280,7 @@ type
     class procedure CB(var handle: uv_signal_t; signum: integer); cdecl; static;
     class function Data(const h: uv_signal_t): TUVSignal; static; inline;
     procedure Init; override;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     function Start(F: TUVIntNotify): integer; overload;
     function StartOneShot(F: TUVIntNotify): integer; overload;
@@ -302,6 +308,7 @@ type
       static;
     class function Data(const h: uv_process_t): TUVProcess; static; inline;
     procedure Init; override;
+    class procedure ReleaseHandle(h : Pointer); override;
   public
     constructor Create(const O: TUVProcessOptions; F: TUVProcessNotify = nil;
       L: TUVLoop = nil); overload;
@@ -812,13 +819,15 @@ begin
     except on E: Exception do
       A.E := E;
     end;
-    if NoReturn then AsyncPool.Release(A)
+    if NoReturn then begin A.FCB:=nil; A.FRCB:=nil; AsyncPool.Release(A) end
     else A.S.SetEvent;
   end else begin
     try
       A.FCB();
     except on E: Exception do
     end;
+    A.FCB := nil;
+    A.FRCB := nil;
     AsyncPool.Release(A);
   end;
 end;
@@ -847,6 +856,8 @@ begin
         Result := A.Ret;
         if not EventPool.Put(A.S) then A.S.Free;
         E := A.E;
+        A.FCB := nil;
+        A.FRCB := nil;
         AsyncPool.Release(A);
         if assigned(E) then raise E;
       end;
@@ -1017,6 +1028,12 @@ begin
   DoInit(uv_idle_init);
 end;
 
+class procedure TUVIdle.ReleaseHandle(h: Pointer);
+begin
+  PUV_Idle(h).FCB := nil;
+  inherited;
+end;
+
 function TUVIdle.Start(F: TUVNotify): integer;
 begin
   if assigned(F) then begin
@@ -1071,6 +1088,12 @@ begin
   InterVal := 1000;
 end;
 
+class procedure TUVTimer.ReleaseHandle(h: Pointer);
+begin
+  PUV_Timer(h).FCB := nil;
+  inherited;
+end;
+
 procedure TUVTimer.SetInterval(const Value: UInt64);
 begin
   uv_timer_set_repeat(UV.handle.T, Value);
@@ -1121,6 +1144,12 @@ begin
   DoInit(uv_prepare_init);
 end;
 
+class procedure TUVPrepare.ReleaseHandle(h: Pointer);
+begin
+  PUV_Prepare(h).FCB := nil;
+  inherited;
+end;
+
 function TUVPrepare.Start(F: TUVNotify): integer;
 begin
   if assigned(F) then begin
@@ -1156,6 +1185,12 @@ procedure TUVCheck.Init;
 begin
   inherited;
   DoInit(uv_check_init);
+end;
+
+class procedure TUVCheck.ReleaseHandle(h: Pointer);
+begin
+  PUV_Check(h).FCB := nil;
+  inherited;
 end;
 
 function TUVCheck.Start(F: TUVNotify): integer;
@@ -1210,6 +1245,12 @@ begin
   else if fsock<>0 then uv_poll_init_socket(loop.uvloop^,uv.handle.P,fsock);
 end;
 
+class procedure TUVPoll.ReleaseHandle(h: Pointer);
+begin
+  PUV_Poll(h).FCB := nil;
+  inherited;
+end;
+
 function TUVPoll.Start(F: TUV2IntNotify): integer;
 begin
   if assigned(F) then begin
@@ -1250,6 +1291,12 @@ procedure TUVSignal.Init;
 begin
   inherited;
   DoInit(uv_signal_init);
+end;
+
+class procedure TUVSignal.ReleaseHandle(h: Pointer);
+begin
+  PUV_Signal(h).FCB := nil;
+  inherited;
 end;
 
 function TUVSignal.Start(F: TUVIntNotify): integer;
@@ -1328,6 +1375,12 @@ end;
 class function TUVProcess.kill(pid, signum: integer): integer;
 begin
   Result := uv_kill(pid, signum);
+end;
+
+class procedure TUVProcess.ReleaseHandle(h: Pointer);
+begin
+  PUVProcessData(h).FCB := nil;
+  inherited;
 end;
 
 { TUVStream }
@@ -1521,25 +1574,30 @@ end;
 { TUVShutDown }
 
 class procedure TUVShutDown.CB(var R: uv_shutdown_t; st: integer);
-var S : TUVStream;
+var S : PUVShutDown;
 begin
+  S := @R;
   try
-    with PUVShutDown(@R)^ do if assigned(FCB) then FCB(st);
+    with S^ do if assigned(FCB) then FCB(st);
   finally
-    ShutDownPool.Release(@R);
+    S.FCB := nil;
+    ShutDownPool.Release(S);
   end;
 end;
 
 { TUVWrite }
 
 class procedure TUVWrite.CB(var R: uv_write_t; st: integer);
+var W : PUVWrite;
 begin
+  W := @R;
   try
-    with PUVWrite(@R)^ do
+    with W^ do
       if assigned(FCB) then FCB(st);
   finally
-    PUVWrite(@R).buffer := nil;
-    WritePool.Release(@R);
+    W.buffer := nil;
+    W.FCB := nil;
+    WritePool.Release(W);
   end;
 end;
 
@@ -1551,7 +1609,14 @@ begin
 end;
 
 class procedure TUVStream<T>.ReleaseHandle(h : Pointer);
+var S : PData;
 begin
+  S := h;
+  S.S.FLCB := nil;
+  S.S.FRCB := nil;
+  S.S.FURCB := nil;
+  S.S.FFSCB := nil;
+  S.S.FPCB := nil;
   Pool.Release(h);
 end;
 
@@ -1708,11 +1773,14 @@ end;
 { TUVConnect }
 
 class procedure TUVConnect.CB(var R: uv_connect_t; st: integer);
+var C : PUVConnect;
 begin
+  C :=@R;
   try
-    with PUVConnect(@R)^ do if assigned(FCB) then FCB(st);
+    with C^ do if assigned(FCB) then FCB(st);
   finally
-    ConnectPool.Release(@R);
+    C.FCB := nil;
+    ConnectPool.Release(C);
   end;
 end;
 
@@ -1949,6 +2017,7 @@ begin
     if assigned(P.FCB) then P.FCB(status);
   finally
     P.buf := nil;
+    P.FCB := nil;
     SendPool.Release(P);
   end;
 end;

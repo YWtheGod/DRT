@@ -208,7 +208,9 @@ initialization
 {$ENDIF}
 {$IFDEF MSWINDOWS}
   GetMemoryManager(OriginMM);
+{$IF not Defined(WIN32) or not Defined(DEBUG)}
   PatchDRTMM;
+{$ENDIF}
   with newmove do begin
     p1 := p1value;
     p2 := p2value;
@@ -224,7 +226,9 @@ initialization
 {$ENDIF}
 finalization
 {$IFDEF MSWINDOWS}
+{$IF not Defined(WIN32) or not Defined(DEBUG)}
   RestoreFunc;
+{$ENDIF}
   PatchMove(oldmove,newmove);
 {$ENDIF}
 {$IFDEF LINUX64}

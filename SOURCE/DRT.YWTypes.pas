@@ -54,7 +54,8 @@ end;
 TStack<T> = record
 
 const
-  StackSize = (1 shl sizeof(T) * 3) * 8 - 1;
+  _StackSize = (1 shl sizeof(T) * 3) * 8 - 1;
+  StackSize = 511;
 var
   [volatile]
   head: Integer;
@@ -69,7 +70,8 @@ end;
 
 TRingQueue<T> = record
 const
-  QueueSize = (1 shl sizeof(T) * 3) * 8 - 1;
+  QueueSize = 511;
+  _QueueSize = (1 shl (sizeof(T) * 3)) * 8 - 1;
 var
   [volatile]
   head: Integer;
@@ -211,26 +213,16 @@ end;
         obj: T;
 {$ENDIF}
     public
-      function O: T;
-      inline;
-      class operator Implicit(a: T): R<T>;
-      inline;
-      class operator Implicit(a: R<T>): T;
-      inline;
-      class operator Equal(a, B: R<T>): boolean;
-      inline;
-      class operator NotEqual(a, B: R<T>): boolean;
-      inline;
-      class operator Equal(a: R<T>; B: Pointer): boolean;
-      inline;
-      class operator NotEqual(a: R<T>; B: Pointer): boolean;
-      inline;
-      class operator Equal(a: R<T>; B: T): boolean;
-      inline;
-      class operator NotEqual(a: R<T>; B: T): boolean;
-      inline;
-      class operator Positive(a: R<T>): T;
-      inline;
+      function O: T; inline;
+      class operator Implicit(a: T): R<T>; inline;
+      class operator Implicit(a: R<T>): T; inline;
+      class operator Equal(a, B: R<T>): boolean; inline;
+      class operator NotEqual(a, B: R<T>): boolean; inline;
+      class operator Equal(a: R<T>; B: Pointer): boolean; inline;
+      class operator NotEqual(a: R<T>; B: Pointer): boolean; inline;
+      class operator Equal(a: R<T>; B: T): boolean; inline;
+      class operator NotEqual(a: R<T>; B: T): boolean; inline;
+      class operator Positive(a: R<T>): T; inline;
 {$IFNDEF AUTOREFCOUNT}
       class operator Initialize(out Dest: R<T>);
       class operator Finalize(var Dest: R<T>);
@@ -249,28 +241,18 @@ end;
     public
       function O: T;
       inline;
-      class operator Implicit(a: WR<T>): R<T>;
-      inline;
-      class operator Implicit(a: R<T>): WR<T>;
-      inline;
-      class operator Equal(a, B: WR<T>): boolean;
-      inline;
-      class operator NotEqual(a, B: WR<T>): boolean;
-      inline;
-      class operator Equal(a: WR<T>; B: Pointer): boolean;
-      inline;
-      class operator NotEqual(a: WR<T>; B: Pointer): boolean;
-      inline;
-      class operator Equal(a: WR<T>; B: T): boolean;
-      inline;
-      class operator NotEqual(a: WR<T>; B: T): boolean;
-      inline;
-      class operator Equal(a: WR<T>; B: R<T>): boolean;
-      inline;
-      class operator NotEqual(a: WR<T>; B: R<T>): boolean;
-      inline;
-      class operator Positive(a: WR<T>): T;
-      inline;
+      class operator Implicit(a: WR<T>): R<T>; inline;
+      class operator Implicit(a: WR<T>): T; inline;
+      class operator Implicit(a: R<T>): WR<T>; inline;
+      class operator Equal(a, B: WR<T>): boolean; inline;
+      class operator NotEqual(a, B: WR<T>): boolean; inline;
+      class operator Equal(a: WR<T>; B: Pointer): boolean; inline;
+      class operator NotEqual(a: WR<T>; B: Pointer): boolean; inline;
+      class operator Equal(a: WR<T>; B: T): boolean; inline;
+      class operator NotEqual(a: WR<T>; B: T): boolean; inline;
+      class operator Equal(a: WR<T>; B: R<T>): boolean; inline;
+      class operator NotEqual(a: WR<T>; B: R<T>): boolean; inline;
+      class operator Positive(a: WR<T>): T; inline;
 {$IFNDEF AUTOREFCOUNT}
       class operator Initialize(out Dest: WR<T>);
       class operator Finalize(var Dest: WR<T>);
@@ -278,6 +260,32 @@ end;
       inline;
 {$ENDIF}
       end;
+  TTaskResult = (StillWorking,AllDone,Canceled,JustCancel,JustDone);
+  TTaskSyncData = record
+    RefCount,TaskCount : integer;
+    ResultValue : TTaskResult;
+    OnFinish : TProc;
+  end;
+  PTaskSyncData = ^TTaskSyncData;
+  TaskSyncer = record
+  private
+  class var
+    DataPool : TPool<TTaskSyncData,__T2>;
+  var
+    Data : PTaskSyncData;
+    procedure CheckData; inline;
+    procedure AddRef; inline;
+    procedure RemoveRef; inline;
+  public
+    procedure AddTask; overload; inline;
+    procedure AddTask(const i : integer); overload; inline;
+    procedure OnAllDone(F : TProc); inline;
+    function Cancel(F: TProc):TTaskResult; inline;
+    function DoneTask : TTaskResult; inline;
+    class operator Initialize(out Dest: TaskSyncer);
+    class operator Finalize(var Dest: TaskSyncer);
+    class operator Assign(var Dest: TaskSyncer; const [ref] Src: TaskSyncer); inline;
+  end;
 
 var
   __RefPool : TPool<__Ref,__T3>;
@@ -588,6 +596,11 @@ begin
 {$ENDIF}
 end;
 
+class operator WR<T>.Implicit(a: WR<T>): T;
+begin
+  Result := A.O;
+end;
+
 class operator WR<T>.Implicit(a: WR<T>): R<T>;
 begin
 {$IFDEF AUTOREFCOUNT}
@@ -736,7 +749,7 @@ end;
 function TPool<T, T1>.Get: Pointer;
 begin
   Result := PT(Data.Get);
-  if Result=nil then new(Result);
+  if Result=nil then new(PT(Result));
 end;
 
 procedure TPool<T, T1>.Release(const P: Pointer);
@@ -936,6 +949,99 @@ end;
 class operator WRefPtr.Implicit(a: WRefPtr): Boolean;
 begin
   Result := a.PTR<>nil;
+end;
+
+{ TaskSyncer }
+
+procedure TaskSyncer.AddRef;
+begin
+  if Data<>nil then atomicincrement(Data.RefCount);
+end;
+
+procedure TaskSyncer.AddTask;
+begin
+  CheckData;
+  atomicincrement(Data.TaskCount);
+end;
+
+procedure TaskSyncer.AddTask(const i: integer);
+begin
+  CheckData;
+  atomicincrement(Data.TaskCount,i);
+end;
+
+class operator TaskSyncer.Assign(var Dest: TaskSyncer;
+  const [ref]Src: TaskSyncer);
+begin
+  Dest.RemoveRef;
+  Dest.Data := Src.Data;
+  Dest.AddRef;
+end;
+
+function TaskSyncer.Cancel(F: TProc): TTaskResult;
+begin
+  CheckData;
+  Result := TTaskResult(atomiccmpexchange(PCardinal(Data.ResultValue)^,
+    ord(Canceled), ord(StillWorking)));
+  if Result=StillWorking then begin
+    try
+      if assigned(F) then F;
+    except on E: Exception do
+    end;
+    Result := JustCancel;
+  end;
+end;
+
+procedure TaskSyncer.CheckData;
+begin
+  if Data=nil then begin
+    Data := DataPool.Get;
+    Data.RefCount := 1;
+    Data.TaskCount := 0;
+    Data.ResultValue := StillWorking;
+    Data.OnFinish := nil;
+  end;
+end;
+
+function TaskSyncer.DoneTask: TTaskResult;
+begin
+  CheckData;
+  Result := StillWorking;
+  if atomicdecrement(Data.TaskCount)<=0 then begin
+    Result := TTaskResult(atomiccmpexchange(PCardinal(@Data.ResultValue)^,
+      ord(AllDone),ord(StillWorking)));
+    if Result=StillWorking then begin
+      Result := justDone;
+      try
+        if assigned(Data.OnFinish) then Data.OnFinish();
+      except on E: Exception do
+      end;
+    end;
+  end;
+end;
+
+class operator TaskSyncer.Finalize(var Dest: TaskSyncer);
+begin
+  Dest.RemoveRef;
+end;
+
+class operator TaskSyncer.Initialize(out Dest: TaskSyncer);
+begin
+  Dest.Data := nil;
+end;
+
+procedure TaskSyncer.OnAllDone(F: TProc);
+begin
+  CheckData;
+  Data.OnFinish := F;
+end;
+
+procedure TaskSyncer.RemoveRef;
+begin
+  if assigned(Data) then if atomicdecrement(Data.RefCount)=0 then begin
+    DataPool.Release(Data);
+    Data := nil;
+  end;
 end;
 
 end.

@@ -27,6 +27,9 @@
         <Projects Include="DEMOS\TestZSTDFMXdproj.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="DEMOS\TestAutoRef.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -107,14 +110,23 @@
     <Target Name="TestZSTDFMXdproj:Make">
         <MSBuild Projects="DEMOS\TestZSTDFMXdproj.dproj" Targets="Make"/>
     </Target>
+    <Target Name="TestAutoRef">
+        <MSBuild Projects="DEMOS\TestAutoRef.dproj"/>
+    </Target>
+    <Target Name="TestAutoRef:Clean">
+        <MSBuild Projects="DEMOS\TestAutoRef.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestAutoRef:Make">
+        <MSBuild Projects="DEMOS\TestAutoRef.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="DRT;DRT_WIN;DRT_VCL;TESTZSTD;TESTVCLEDGE;TESTFMXEDGE;TestMMConsole;TestZSTDFMXdproj"/>
+        <CallTarget Targets="DRT;DRT_WIN;DRT_VCL;TESTZSTD;TESTVCLEDGE;TESTFMXEDGE;TestMMConsole;TestZSTDFMXdproj;TestAutoRef"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;DRT_VCL:Clean;TESTZSTD:Clean;TESTVCLEDGE:Clean;TESTFMXEDGE:Clean;TestMMConsole:Clean;TestZSTDFMXdproj:Clean"/>
+        <CallTarget Targets="DRT:Clean;DRT_WIN:Clean;DRT_VCL:Clean;TESTZSTD:Clean;TESTVCLEDGE:Clean;TESTFMXEDGE:Clean;TestMMConsole:Clean;TestZSTDFMXdproj:Clean;TestAutoRef:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="DRT:Make;DRT_WIN:Make;DRT_VCL:Make;TESTZSTD:Make;TESTVCLEDGE:Make;TESTFMXEDGE:Make;TestMMConsole:Make;TestZSTDFMXdproj:Make"/>
+        <CallTarget Targets="DRT:Make;DRT_WIN:Make;DRT_VCL:Make;TESTZSTD:Make;TESTVCLEDGE:Make;TESTFMXEDGE:Make;TestMMConsole:Make;TestZSTDFMXdproj:Make;TestAutoRef:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='DRT'">
@@ -136,11 +148,11 @@
             <Platforms>Win32</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
-        <BuildGroupProject Include="DRT.VCL.dproj">
-            <ProjectGuid>{972CA42A-313B-46E7-AA65-B16D6506681A}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
-            <Platforms>Win32;Win64</Platforms>
-            <Enabled>True</Enabled>
+        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
+            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win64</Platforms>
+            <Enabled>False</Enabled>
         </BuildGroupProject>
         <BuildGroupProject Include="DRT.WIN.dproj">
             <ProjectGuid>{E3A390E0-66B0-427B-B57A-C5E07798D674}</ProjectGuid>
@@ -148,10 +160,16 @@
             <Platforms>Win32;Win64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
-        <BuildGroupProject Include="DEMOS\TESTZSTD.dproj">
-            <ProjectGuid>{F4BF1A0A-4D0F-4631-B862-7F15ABD46812}</ProjectGuid>
-            <Configurations>Release</Configurations>
-            <Platforms>Win64</Platforms>
+        <BuildGroupProject Include="DRT.VCL.dproj">
+            <ProjectGuid>{972CA42A-313B-46E7-AA65-B16D6506681A}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="DEMOS\TestAutoRef.dproj">
+            <ProjectGuid>{D56A360A-5BFD-4311-9A50-155F6AE3F912}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
             <Enabled>False</Enabled>
         </BuildGroupProject>
         <BuildGroupProject Include="DRT.dproj">

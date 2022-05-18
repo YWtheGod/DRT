@@ -1,9 +1,9 @@
-﻿program TESTVCLEDGE;
+﻿program TestAutoRef;
 
 uses
-  DRT.INIT,
+  DRT.Init,
   Vcl.Forms,
-  testwv2ldmain in 'testwv2ldmain.pas' {Main};
+  TestAutoRefMain in 'TestAutoRefMain.pas' {Main};
 
 {$R *.res}
 
